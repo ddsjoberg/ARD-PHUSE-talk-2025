@@ -130,7 +130,7 @@
     "href": "slides/index.html#section",
     "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
     "section": "",
-    "text": "How it started\n\n\nBegan to address reproducible issues while working in academia\nGoal was to build a package to summarize study results with code that was both simple and customizable\nFirst release in May 2019\n\n\n\nHow it’s going\n\n\nThe stats\n\n1,000,000+ installations from CRAN\n1000+ GitHub stars\n300+ contributors\n~50 code contributors"
+    "text": "How it started\n\n\nBegan to address reproducible issues while working in academia\nGoal was to build a package to summarize study results with code that was both simple and customizable\nFirst release in May 2019\n\n\n\nHow it’s going\n\n\nThe stats\n\n1,200,000+ installations from CRAN\n1000+ GitHub stars\n300+ contributors\n~50 code contributors"
   },
   {
     "objectID": "slides/index.html#section-1",
@@ -172,7 +172,7 @@
     "href": "slides/index.html#gtsummary-extras",
     "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
     "section": "{gtsummary} extras",
-    "text": "{gtsummary} extras\n\n{gtsummary} tables are composable, meaning complex tables can be cobbled together one piece at a time and combined.\n\nmany other functions to create common structures, such as, tbl_continuous(), tbl_hierarchical(),tbl_cross(), tbl_wide_summary(), and many more\nadd_*() functions will add additional columns/summary statistics to an existing table.\ntbl_merge() and tbl_stack() combine tow more more tables\nand many more functions available for creating beautiful tables!🤩\n\nCheck out the R/Pharma Webinar for more information on {gtsummary} and {cards} too!\n\nhttps://www.danieldsjoberg.com/ARD-RinPharma-workshop-2024/"
+    "text": "{gtsummary} extras\n\n{gtsummary} tables are composable, meaning complex tables can be cobbled together one piece at a time and combined.\n\nmany other functions to create common structures, such as, tbl_continuous(), tbl_hierarchical(),tbl_cross(), tbl_wide_summary(), and many more\nadd_*() functions will add additional columns/summary statistics to an existing table.\ntbl_merge() and tbl_stack() combine tow more more tables\nand many more functions available for creating beautiful tables!🤩\n\nCheck out the PHUSE US Connect Workshop (later today) for more information!\n\nhttps://www.danieldsjoberg.com/ARD-PHUSE-workshop-2025/"
   },
   {
     "objectID": "slides/index.html#gtsummary-extras-1",
