@@ -775,9 +775,14 @@
     },
     "gtsummary": {
       "Package": "gtsummary",
-      "Version": "2.0.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
+      "Version": "2.0.4.9013",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "ddsjoberg",
+      "RemoteRepo": "gtsummary",
+      "RemoteRef": "main",
+      "RemoteSha": "2239d89abb9a903a8e185576c030a25e0de6d4f0",
       "Requirements": [
         "R",
         "cards",
@@ -790,7 +795,7 @@
         "tidyr",
         "vctrs"
       ],
-      "Hash": "a6cb3a1251d2a86c14ccc3e9977437dc"
+      "Hash": "8157b396f62d086605e7fa1268461967"
     },
     "haven": {
       "Package": "haven",

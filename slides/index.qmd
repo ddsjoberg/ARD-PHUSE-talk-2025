@@ -407,6 +407,23 @@ dplyr::filter(pharmaverseadam::adsl, SAFFL == "Y") |>
 
     - [https://www.danieldsjoberg.com/ARD-RinPharma-workshop-2024/](https://www.danieldsjoberg.com/ARD-RinPharma-workshop-2024/)
 
+## {gtsummary} extras
+
+- If the structured `tbl_*()` and `tbl_ard_*()` functions don't exactly meet your needs, use `as_gtsummary()`!
+
+- The `as_gtsummary()` function ingests a data frame and adds the {gtsummary} framework around it: great for listings and highly bespoke tables.
+
+```{r, echo=FALSE}
+theme_gtsummary_compact()
+```
+
+```{r}
+cards::ADAE[1:7, c("USUBJID", "AESOC", "AETERM", "AESEV")] |> 
+  as_gtsummary() |> 
+  modify_column_alignment(everything(), "left") |> 
+  as_gt(groupname_col = "USUBJID")
+```
+
 ## 
 
 ::: {.larger}
