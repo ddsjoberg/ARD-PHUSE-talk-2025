@@ -305,7 +305,7 @@ cards::print_ard_conditions(ard_gone_wrong)
 ::: small
 -   The stats
 
-    -   [1,000,000+ installations]{.emphasis} from CRAN
+    -   [1,200,000+ installations]{.emphasis} from CRAN
     -   1000+ GitHub stars
     -   300+ contributors
     -   \~50 code contributors
@@ -403,9 +403,9 @@ dplyr::filter(pharmaverseadam::adsl, SAFFL == "Y") |>
     
     - and many more functions available for creating beautiful tables!🤩 
 
-- Check out the R/Pharma Webinar for more information on {gtsummary} and {cards} too! 
+- Check out the PHUSE US Connect Workshop (_later today_) for more information! 
 
-    - [https://www.danieldsjoberg.com/ARD-RinPharma-workshop-2024/](https://www.danieldsjoberg.com/ARD-RinPharma-workshop-2024/)
+    - [https://www.danieldsjoberg.com/ARD-PHUSE-workshop-2025/](https://www.danieldsjoberg.com/ARD-PHUSE-workshop-2025/)
 
 ## {gtsummary} extras
 
