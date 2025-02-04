@@ -224,12 +224,12 @@ pharmaverseadam::adsl |>
 ```{r}
 #| message: true
 #| warning: false
-library(survival)
+library(survival); library(ggsurvfit)
 
 # build model
 mod <- pharmaverseadam::adtte_onco |> 
   dplyr::filter(PARAM %in% "Progression Free Survival") |>
-  coxph(ggsurvfit::Surv_CNSR() ~ ARM, data = _)
+  coxph(Surv_CNSR() ~ ARM, data = _)
 
 # put model in a summary table
 tbl <- gtsummary::tbl_regression(mod, exponentiate = TRUE) |> 
