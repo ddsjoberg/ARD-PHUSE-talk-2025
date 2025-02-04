@@ -116,7 +116,7 @@
     "href": "slides/index.html#cardx-regression-example",
     "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
     "section": "{cardx} Regression Example",
-    "text": "{cardx} Regression Example\n\nlibrary(survival)\n\n# build model\nmod &lt;- pharmaverseadam::adtte_onco |&gt; \n  dplyr::filter(PARAM %in% \"Progression Free Survival\") |&gt;\n  coxph(ggsurvfit::Surv_CNSR() ~ ARM, data = _)\n\n# put model in a summary table\ntbl &lt;- gtsummary::tbl_regression(mod, exponentiate = TRUE) |&gt; \n  gtsummary::add_n(location = c('label', 'level')) |&gt; \n  gtsummary::add_nevent(location = c('label', 'level'))\n\n\n\n\n\n\n\n\n\n\nCharacteristic\nN\nEvent N\nHR1\n95% CI1\np-value\n\n\n\n\nDescription of Planned Arm\n254\n6\n\n\n\n\n\n\n\n\n    Placebo\n86\n3\n—\n—\n\n\n\n\n    Xanomeline High Dose\n84\n2\n3.00\n0.39, 22.9\n0.3\n\n\n    Xanomeline Low Dose\n84\n1\n1.27\n0.11, 14.3\n0.8\n\n\n\n1 HR = Hazard Ratio, CI = Confidence Interval"
+    "text": "{cardx} Regression Example\n\nlibrary(survival)\n\n# build model\nmod &lt;- pharmaverseadam::adtte_onco |&gt; \n  dplyr::filter(PARAM %in% \"Progression Free Survival\") |&gt;\n  coxph(ggsurvfit::Surv_CNSR() ~ ARM, data = _)\n\n# put model in a summary table\ntbl &lt;- gtsummary::tbl_regression(mod, exponentiate = TRUE) |&gt; \n  gtsummary::add_n(location = c('label', 'level')) |&gt; \n  gtsummary::add_nevent(location = c('label', 'level'))\n\n\n\n\n\n\n\n\n\n\nCharacteristic\nN\nEvent N\nHR\n95% CI\np-value\n\n\n\n\nDescription of Planned Arm\n254\n6\n\n\n\n\n\n\n\n\n    Placebo\n86\n3\n—\n—\n\n\n\n\n    Xanomeline High Dose\n84\n2\n3.00\n0.39, 22.9\n0.3\n\n\n    Xanomeline Low Dose\n84\n1\n1.27\n0.11, 14.3\n0.8\n\n\n\nAbbreviations: CI = Confidence Interval, HR = Hazard Ratio"
   },
   {
     "objectID": "slides/index.html#when-things-go-wrong",
@@ -173,6 +173,13 @@
     "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
     "section": "{gtsummary} extras",
     "text": "{gtsummary} extras\n\n{gtsummary} tables are composable, meaning complex tables can be cobbled together one piece at a time and combined.\n\nmany other functions to create common structures, such as, tbl_continuous(), tbl_hierarchical(),tbl_cross(), tbl_wide_summary(), and many more\nadd_*() functions will add additional columns/summary statistics to an existing table.\ntbl_merge() and tbl_stack() combine tow more more tables\nand many more functions available for creating beautiful tables!🤩\n\nCheck out the R/Pharma Webinar for more information on {gtsummary} and {cards} too!\n\nhttps://www.danieldsjoberg.com/ARD-RinPharma-workshop-2024/"
+  },
+  {
+    "objectID": "slides/index.html#gtsummary-extras-1",
+    "href": "slides/index.html#gtsummary-extras-1",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "{gtsummary} extras",
+    "text": "{gtsummary} extras\n\nIf the structured tbl_*() and tbl_ard_*() functions don’t exactly meet your needs, use as_gtsummary()!\nThe as_gtsummary() function ingests a data frame and adds the {gtsummary} framework around it: great for listings and highly bespoke tables.\n\n\ncards::ADAE[1:7, c(\"USUBJID\", \"AESOC\", \"AETERM\", \"AESEV\")] |&gt; \n  as_gtsummary() |&gt; \n  modify_column_alignment(everything(), \"left\") |&gt; \n  as_gt(groupname_col = \"USUBJID\")\n\n\n\n\n\n\n\nPrimary System Organ Class\nReported Term for the Adverse Event\nSeverity/Intensity\n\n\n\n\n01-701-1015\n\n\nGENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS\nAPPLICATION SITE ERYTHEMA\nMILD\n\n\nGENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS\nAPPLICATION SITE PRURITUS\nMILD\n\n\nGASTROINTESTINAL DISORDERS\nDIARRHOEA\nMILD\n\n\n01-701-1023\n\n\nSKIN AND SUBCUTANEOUS TISSUE DISORDERS\nERYTHEMA\nMILD\n\n\nSKIN AND SUBCUTANEOUS TISSUE DISORDERS\nERYTHEMA\nMODERATE\n\n\nCARDIAC DISORDERS\nATRIOVENTRICULAR BLOCK SECOND DEGREE\nMILD\n\n\nSKIN AND SUBCUTANEOUS TISSUE DISORDERS\nERYTHEMA\nMILD"
   },
   {
     "objectID": "slides/index.html#section-2",
