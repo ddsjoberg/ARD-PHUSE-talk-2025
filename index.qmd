@@ -1,7 +1,7 @@
 ---
 title: "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R"
 subtitle: "Our First ARD-Based Filing Experience"
-author: "Daniel D. Sjoberg"
+author: "Daniel D. Sjoberg, Nolan Steed"
 engine: knitr
 editor: 
   markdown: 
