@@ -182,6 +182,13 @@
     "text": "{gtsummary} extras\n\nIf the structured tbl_*() and tbl_ard_*() functions don’t exactly meet your needs, use as_gtsummary()!\nThe as_gtsummary() function ingests a data frame and adds the {gtsummary} framework around it: great for listings and highly bespoke tables.\n\n\ncards::ADAE[1:7, c(\"USUBJID\", \"AESOC\", \"AETERM\", \"AESEV\")] |&gt; \n  as_gtsummary() |&gt; \n  modify_column_alignment(everything(), \"left\") |&gt; \n  as_gt(groupname_col = \"USUBJID\")\n\n\n\n\n\n\n\nPrimary System Organ Class\nReported Term for the Adverse Event\nSeverity/Intensity\n\n\n\n\n01-701-1015\n\n\nGENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS\nAPPLICATION SITE ERYTHEMA\nMILD\n\n\nGENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS\nAPPLICATION SITE PRURITUS\nMILD\n\n\nGASTROINTESTINAL DISORDERS\nDIARRHOEA\nMILD\n\n\n01-701-1023\n\n\nSKIN AND SUBCUTANEOUS TISSUE DISORDERS\nERYTHEMA\nMILD\n\n\nSKIN AND SUBCUTANEOUS TISSUE DISORDERS\nERYTHEMA\nMODERATE\n\n\nCARDIAC DISORDERS\nATRIOVENTRICULAR BLOCK SECOND DEGREE\nMILD\n\n\nSKIN AND SUBCUTANEOUS TISSUE DISORDERS\nERYTHEMA\nMILD"
   },
   {
+    "objectID": "slides/index.html#gtsummary-extras-2",
+    "href": "slides/index.html#gtsummary-extras-2",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "{gtsummary} extras",
+    "text": "{gtsummary} extras"
+  },
+  {
     "objectID": "slides/index.html#section-2",
     "href": "slides/index.html#section-2",
     "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
