@@ -424,6 +424,10 @@ cards::ADAE[1:7, c("USUBJID", "AESOC", "AETERM", "AESEV")] |>
   as_gt(groupname_col = "USUBJID")
 ```
 
+## {gtsummary} extras
+
+![](images/gtsummary_rmarkdown.png)
+
 ## 
 
 ::: {.larger}
