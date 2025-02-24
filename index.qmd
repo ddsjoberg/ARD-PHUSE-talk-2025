@@ -62,3 +62,9 @@ award.
 [`r fontawesome::fa("linkedin", fill = "#606060")`](https://www.linkedin.com/in/ddsjoberg/)
 [`r fontawesome::fa("github", fill = "#606060")`](https://github.com/ddsjoberg/)
 
+![](images/nolan-circle.png){style="float:left; padding: 0 10px 0 0;"fig-alt="Headshot of Nolan Steed" width="150"}
+
+Nolan Steed (he/him) is a Senior Data Scientist at Denali Therapeutics, and previously worked as a Data Scientist at Hoffmann-La-Roche.
+He has a passion for developing and using open source tools to help bring therapies to patients; he is a contributor to the package [{tern}](https://github.com/insightsengineering/tern) R package, which is a part of the [Pharamverse](https://pharmaverse.org).
+
+[`r fontawesome::fa("linkedin", fill = "#606060")`](https://www.linkedin.com/in/nolan-steed9)
