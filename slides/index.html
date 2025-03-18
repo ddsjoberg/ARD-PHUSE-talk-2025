@@ -7,8 +7,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-48ffa3e5b9d089919c6712c39e5b00f2.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.6.41">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.42">
 
   <meta name="author" content="Daniel D. Sjoberg, Nolan Steed">
   <title>Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R</title>
@@ -207,14 +207,15 @@ Daniel D. Sjoberg, Nolan Steed
 </div>
 
 </section>
-<section id="what-are-we-doing-here-today" class="slide level2">
-<h2>What are we doing here today?</h2>
+<section id="todays-plan" class="slide level2">
+<h2>Today’s Plan</h2>
 <ul>
-<li><p>Briefest introduction into CDISC’s Analysis Results Standard (ARS)</p></li>
-<li><p>Where Analysis Results Datasets (ARDs) fits under the umbrella of ARS</p></li>
-<li><p>How to utilize ARDs to facilitate reporting with and without the ARS</p>
+<li><p>Discuss our experience using ARD-first approach for TLGs.</p></li>
+<li><p>But first, a little background</p>
 <ul>
-<li>Using {cards} to build ARDs and {gtsummary} for reporting</li>
+<li><p>CDISC’s Analysis Results Standard (ARS)</p></li>
+<li><p>ARDs with the {cards}+{cardx} packages</p></li>
+<li><p>Tables with the {gtsummary} package</p></li>
 </ul></li>
 </ul>
 
@@ -242,6 +243,7 @@ Daniel D. Sjoberg, Nolan Steed
 <img data-src="images/ars-example-flow2-hex.png" class="quarto-figure quarto-figure-center r-stretch"><ul>
 <li><p>The ARS provides a metadata-driven infrastructure for analysis</p></li>
 <li><p>{cards} serves as the engine for the analysis</p></li>
+<li><p>{gtsummary} is the engine for summary tables</p></li>
 </ul>
 </section>
 <section id="analysis-results-data-ard" class="slide level2">
@@ -260,22 +262,6 @@ Daniel D. Sjoberg, Nolan Steed
 </ul>
 
 <img data-src="images/ard-flow.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="ards-uses-outside-of-the-ars" class="slide level2">
-<h2>ARDs uses outside of the ARS</h2>
-<div>
-<ul>
-<li class="fragment"><p>Rethinking QC</p>
-<ul>
-<li class="fragment">Highly structured data frame of results is much simpler to QC compared to statistics in a summary table or figure.</li>
-</ul></li>
-<li class="fragment"><p>Flexible data file types</p>
-<ul>
-<li class="fragment">ARD can be saved as a dataset (rds, xpt, parquet, etc.), YAML, or JSON file</li>
-</ul></li>
-<li class="fragment"><p>ARDs integrate with the {gtsummary} package to create summary tables</p></li>
-</ul>
-</div>
-</section>
 <section>
 <section id="ards-using-cards" class="title-slide slide level1 center">
 <h1>ARDs using {cards}</h1>
@@ -288,7 +274,7 @@ Daniel D. Sjoberg, Nolan Steed
 <li><p>Part of the Pharmaverse</p></li>
 <li><p>Contains a variety of utilities for creating ARDs</p></li>
 <li><p>Can be used within the ARS workflow and separately</p></li>
-<li><p>45k downloads per month 🤯</p></li>
+<li><p>52K downloads per month 🤯</p></li>
 </ul>
 </div>
 </section>
@@ -364,13 +350,13 @@ Daniel D. Sjoberg, Nolan Steed
 1     ARM      Placebo   AGEGR1            &lt;65         n          n    14
 2     ARM      Placebo   AGEGR1            &lt;65         N          N    86
 3     ARM      Placebo   AGEGR1            &lt;65         p          % 0.163
-4     ARM    Xanomeli…   AGEGR1            &lt;65         n          n    11
-5     ARM    Xanomeli…   AGEGR1            &lt;65         N          N    84
-6     ARM    Xanomeli…   AGEGR1            &lt;65         p          % 0.131
-7     ARM    Xanomeli…   AGEGR1            &lt;65         n          n     8
-8     ARM    Xanomeli…   AGEGR1            &lt;65         N          N    84
-9     ARM    Xanomeli…   AGEGR1            &lt;65         p          % 0.095
-10    ARM      Placebo   AGEGR1            &gt;80         n          n    30</code></pre>
+4     ARM      Placebo   AGEGR1            &gt;80         n          n    30
+5     ARM      Placebo   AGEGR1            &gt;80         N          N    86
+6     ARM      Placebo   AGEGR1            &gt;80         p          % 0.349
+7     ARM      Placebo   AGEGR1          65-80         n          n    42
+8     ARM      Placebo   AGEGR1          65-80         N          N    86
+9     ARM      Placebo   AGEGR1          65-80         p          % 0.488
+10    ARM    Xanomeli…   AGEGR1            &lt;65         n          n    11</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>ℹ 17 more rows</code></pre>
@@ -429,619 +415,10 @@ Daniel D. Sjoberg, Nolan Steed
 <ul>
 <li>This list is growing (rather quickly) 🌱</li>
 </ul>
-</section>
-<section id="cardx-t-test-example" class="slide level2">
-<h2>{cardx} t-test Example</h2>
-<div class="small">
-<ul>
-<li><p>We see the results like the mean difference, the confidence interval, and p-value as expected.</p></li>
-<li><p>And we also see the function’s inputs, which is incredibly useful for re-use, e.g.&nbsp;we know the we did not use equal variances.</p></li>
-</ul>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>pharmaverseadam<span class="sc">::</span>adsl <span class="sc">|&gt;</span> </span>
-<span id="cb16-2"><a></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(ARM <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Xanomeline High Dose"</span>, <span class="st">"Xanomeline Low Dose"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb16-3"><a></a>  cardx<span class="sc">::</span><span class="fu">ard_stats_t_test</span>(<span class="at">by =</span> ARM, <span class="at">variables =</span> AGE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>{cards} data frame: 14 x 9</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   group1 variable   context   stat_name stat_label      stat
-1     ARM      AGE stats_t_…    estimate  Mean Dif…    -1.286
-2     ARM      AGE stats_t_…   estimate1  Group 1 …    74.381
-3     ARM      AGE stats_t_…   estimate2  Group 2 …    75.667
-4     ARM      AGE stats_t_…   statistic  t Statis…     -1.03
-5     ARM      AGE stats_t_…     p.value    p-value     0.304
-6     ARM      AGE stats_t_…   parameter  Degrees …   165.595
-7     ARM      AGE stats_t_…    conf.low  CI Lower…     -3.75
-8     ARM      AGE stats_t_…   conf.high  CI Upper…     1.179
-9     ARM      AGE stats_t_…      method     method Welch Tw…
-10    ARM      AGE stats_t_… alternative  alternat… two.sided
-11    ARM      AGE stats_t_…          mu    H0 Mean         0
-12    ARM      AGE stats_t_…      paired  Paired t…     FALSE
-13    ARM      AGE stats_t_…   var.equal  Equal Va…     FALSE
-14    ARM      AGE stats_t_…  conf.level  CI Confi…      0.95</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>ℹ 3 more variables: fmt_fn, warning, error</code></pre>
-</div>
-</div>
-</section>
-<section id="cardx-regression" class="slide level2">
-<h2>{cardx} Regression</h2>
-<ul>
-<li>Includes functionality to summarize nearly every type of regression model in the R ecosystem:</li>
-</ul>
-<div class="small">
-<p><code>betareg::betareg()</code>, <code>biglm::bigglm()</code>, <code>brms::brm()</code>, <code>cmprsk::crr()</code>, <code>fixest::feglm()</code>, <code>fixest::femlm()</code>, <code>fixest::feNmlm()</code>, <code>fixest::feols()</code>, <code>gam::gam()</code>, <code>geepack::geeglm()</code>, <code>glmmTMB::glmmTMB()</code>, <code>lavaan::lavaan()</code>, <code>lfe::felm()</code>, <code>lme4::glmer.nb()</code>, <code>lme4::glmer()</code>, <code>lme4::lmer()</code>, <code>logitr::logitr()</code>, <code>MASS::glm.nb()</code>, <code>MASS::polr()</code>, <code>mgcv::gam()</code>, <code>mice::mira</code>, <code>mmrm::mmrm()</code>, <code>multgee::nomLORgee()</code>, <code>multgee::ordLORgee()</code>, <code>nnet::multinom()</code>, <code>ordinal::clm()</code>, <code>ordinal::clmm()</code>, <code>parsnip::model_fit</code>, <code>plm::plm()</code>, <code>pscl::hurdle()</code>, <code>pscl::zeroinfl()</code>, <code>rstanarm::stan_glm()</code>, <code>stats::aov()</code>, <code>stats::glm()</code>, <code>stats::lm()</code>, <code>stats::nls()</code>, <code>survey::svycoxph()</code>, <code>survey::svyglm()</code>, <code>survey::svyolr()</code>, <code>survival::cch()</code>, <code>survival::clogit()</code>, <code>survival::coxph()</code>, <code>survival::survreg()</code>, <code>tidycmprsk::crr()</code>, <code>VGAM::vglm()</code> (and more)</p>
-</div>
-</section>
-<section id="cardx-regression-example" class="slide level2">
-<h2>{cardx} Regression Example</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a><span class="fu">library</span>(survival); <span class="fu">library</span>(ggsurvfit)</span>
-<span id="cb20-2"><a></a></span>
-<span id="cb20-3"><a></a><span class="co"># build model</span></span>
-<span id="cb20-4"><a></a>mod <span class="ot">&lt;-</span> pharmaverseadam<span class="sc">::</span>adtte_onco <span class="sc">|&gt;</span> </span>
-<span id="cb20-5"><a></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(PARAM <span class="sc">%in%</span> <span class="st">"Progression Free Survival"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb20-6"><a></a>  <span class="fu">coxph</span>(<span class="fu">Surv_CNSR</span>() <span class="sc">~</span> ARM, <span class="at">data =</span> _)</span>
-<span id="cb20-7"><a></a></span>
-<span id="cb20-8"><a></a><span class="co"># put model in a summary table</span></span>
-<span id="cb20-9"><a></a>tbl <span class="ot">&lt;-</span> gtsummary<span class="sc">::</span><span class="fu">tbl_regression</span>(mod, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb20-10"><a></a>  gtsummary<span class="sc">::</span><span class="fu">add_n</span>(<span class="at">location =</span> <span class="fu">c</span>(<span class="st">'label'</span>, <span class="st">'level'</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb20-11"><a></a>  gtsummary<span class="sc">::</span><span class="fu">add_nevent</span>(<span class="at">location =</span> <span class="fu">c</span>(<span class="st">'label'</span>, <span class="st">'level'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><br></p>
-<div class="cell">
-<div class="cell-output-display">
-<div id="iwkysdunbx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#iwkysdunbx table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 
-#iwkysdunbx thead, #iwkysdunbx tbody, #iwkysdunbx tfoot, #iwkysdunbx tr, #iwkysdunbx td, #iwkysdunbx th {
-  border-style: none;
-}
-
-#iwkysdunbx p {
-  margin: 0;
-  padding: 0;
-}
-
-#iwkysdunbx .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#iwkysdunbx .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#iwkysdunbx .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#iwkysdunbx .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#iwkysdunbx .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#iwkysdunbx .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#iwkysdunbx .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#iwkysdunbx .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#iwkysdunbx .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#iwkysdunbx .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#iwkysdunbx .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#iwkysdunbx .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#iwkysdunbx .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#iwkysdunbx .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#iwkysdunbx .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#iwkysdunbx .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#iwkysdunbx .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#iwkysdunbx .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#iwkysdunbx .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iwkysdunbx .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#iwkysdunbx .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#iwkysdunbx .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#iwkysdunbx .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iwkysdunbx .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#iwkysdunbx .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#iwkysdunbx .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#iwkysdunbx .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iwkysdunbx .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#iwkysdunbx .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#iwkysdunbx .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#iwkysdunbx .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#iwkysdunbx .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#iwkysdunbx .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iwkysdunbx .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#iwkysdunbx .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iwkysdunbx .gt_left {
-  text-align: left;
-}
-
-#iwkysdunbx .gt_center {
-  text-align: center;
-}
-
-#iwkysdunbx .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#iwkysdunbx .gt_font_normal {
-  font-weight: normal;
-}
-
-#iwkysdunbx .gt_font_bold {
-  font-weight: bold;
-}
-
-#iwkysdunbx .gt_font_italic {
-  font-style: italic;
-}
-
-#iwkysdunbx .gt_super {
-  font-size: 65%;
-}
-
-#iwkysdunbx .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#iwkysdunbx .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#iwkysdunbx .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#iwkysdunbx .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#iwkysdunbx .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#iwkysdunbx .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#iwkysdunbx .gt_indent_5 {
-  text-indent: 25px;
-}
-
-#iwkysdunbx .katex-display {
-  display: inline-flex !important;
-  margin-bottom: 0.75em !important;
-}
-
-#iwkysdunbx div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
-  height: 0px !important;
-}
-</style>
-
-<table class="gt_table caption-top" data-quarto-postprocess="true" style="table-layout:fixed;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-<thead>
-<tr class="gt_col_headings header">
-<th id="label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
-<th id="stat_n" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>N</strong></th>
-<th id="stat_nevent" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>Event N</strong></th>
-<th id="estimate" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>HR</strong></th>
-<th id="conf.low" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>95% CI</strong></th>
-<th id="p.value" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>p-value</strong></th>
-</tr>
-</thead>
-<tbody class="gt_table_body">
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">Description of Planned Arm</td>
-<td class="gt_row gt_center" headers="stat_n">254</td>
-<td class="gt_row gt_center" headers="stat_nevent">6</td>
-<td class="gt_row gt_center" headers="estimate"><br>
-</td>
-<td class="gt_row gt_center" headers="conf.low"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Placebo</td>
-<td class="gt_row gt_center" headers="stat_n">86</td>
-<td class="gt_row gt_center" headers="stat_nevent">3</td>
-<td class="gt_row gt_center" headers="estimate">—</td>
-<td class="gt_row gt_center" headers="conf.low">—</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Xanomeline High Dose</td>
-<td class="gt_row gt_center" headers="stat_n">84</td>
-<td class="gt_row gt_center" headers="stat_nevent">2</td>
-<td class="gt_row gt_center" headers="estimate">3.00</td>
-<td class="gt_row gt_center" headers="conf.low">0.39, 22.9</td>
-<td class="gt_row gt_center" headers="p.value">0.3</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Xanomeline Low Dose</td>
-<td class="gt_row gt_center" headers="stat_n">84</td>
-<td class="gt_row gt_center" headers="stat_nevent">1</td>
-<td class="gt_row gt_center" headers="estimate">1.27</td>
-<td class="gt_row gt_center" headers="conf.low">0.11, 14.3</td>
-<td class="gt_row gt_center" headers="p.value">0.8</td>
-</tr>
-</tbody><tfoot class="gt_sourcenotes">
-<tr class="odd">
-<td colspan="6" class="gt_sourcenote">Abbreviations: CI = Confidence Interval, HR = Hazard Ratio</td>
-</tr>
-</tfoot>
-
-</table>
-
-</div>
-</div>
-</div>
-<!-- ## {cardx} Regression Example -->
-<!-- The `cardx::ard_regression()` does **a lot** for us in the background. -->
-<!-- - Identifies the variable from the regression terms (i.e. groups levels of the same variable) -->
-<!-- - Identifies reference groups from categorical covariates -->
-<!-- - Finds variable labels from the source data frames -->
-<!-- - Knows the total N of the model, the number of events, and can do the same for each level of categorical variables -->
-<!-- - Contextually aware of slopes, odds ratios, hazard ratios, and incidence rate ratios -->
-<!-- - And much _**much**_ more. -->
-</section>
-<section id="when-things-go-wrong" class="slide level2">
-<h2>When things go wrong 😱</h2>
-<p>What happens when statistics are un-calculable?</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a>ard_gone_wrong <span class="ot">&lt;-</span> </span>
-<span id="cb21-2"><a></a>  cards<span class="sc">::</span>ADSL <span class="sc">|&gt;</span> </span>
-<span id="cb21-3"><a></a>  cards<span class="sc">::</span><span class="fu">ard_continuous</span>(</span>
-<span id="cb21-4"><a></a>    <span class="at">by =</span> ARM,</span>
-<span id="cb21-5"><a></a>    <span class="at">variable =</span> AGEGR1,</span>
-<span id="cb21-6"><a></a>    <span class="at">statistic =</span> <span class="sc">~</span><span class="fu">list</span>(<span class="at">kurtosis =</span> \(x) e1071<span class="sc">::</span><span class="fu">kurtosis</span>(x))</span>
-<span id="cb21-7"><a></a>  )</span>
-<span id="cb21-8"><a></a>ard_gone_wrong</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>{cards} data frame: 3 x 10</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  group1 group1_level variable stat_name stat_label stat   warning     error
-1    ARM      Placebo   AGEGR1  kurtosis   kurtosis      argument… non-nume…
-2    ARM    Xanomeli…   AGEGR1  kurtosis   kurtosis      argument… non-nume…
-3    ARM    Xanomeli…   AGEGR1  kurtosis   kurtosis      argument… non-nume…</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>ℹ 2 more variables: context, fmt_fn</code></pre>
-</div>
-</div>
-<div class="fragment">
-<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a>cards<span class="sc">::</span><span class="fu">print_ard_conditions</span>(ard_gone_wrong)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><img data-src="images/ard-error-msg.png"></p>
-</div>
-</section></section>
+<aside><div>
+<p>{cards} provides a general framework to easily implement <em>any</em> method. {cardx} provides a nicer user experience for common methods.</p>
+</div></aside></section></section>
 <section>
 <section id="tables-with-gtsummary" class="title-slide slide level1 center">
 <h1>Tables with {gtsummary}</h1>
@@ -1065,10 +442,10 @@ Daniel D. Sjoberg, Nolan Steed
 <ul>
 <li><p>The stats</p>
 <ul>
-<li><span class="emphasis">1,200,000+ installations</span> from CRAN</li>
-<li>1000+ GitHub stars</li>
+<li><span class="emphasis">1,300,000+ installations</span> from CRAN</li>
+<li>1100+ GitHub stars</li>
 <li>300+ contributors</li>
-<li>~50 code contributors</li>
+<li>50+ code contributors</li>
 </ul></li>
 </ul>
 </div>
@@ -1100,36 +477,36 @@ Daniel D. Sjoberg, Nolan Steed
 <section id="demographics-example" class="slide level2">
 <h2>Demographics Example</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26" data-code-line-numbers="|4-9|5|6|7|8|10|11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a><span class="fu">library</span>(gtsummary)</span>
-<span id="cb26-2"><a></a></span>
-<span id="cb26-3"><a></a>tbl <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(pharmaverseadam<span class="sc">::</span>adsl, SAFFL <span class="sc">==</span> <span class="st">"Y"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb26-4"><a></a>  <span class="fu">tbl_summary</span>(</span>
-<span id="cb26-5"><a></a>    <span class="at">by =</span> TRT01A,</span>
-<span id="cb26-6"><a></a>    <span class="at">include =</span> <span class="fu">c</span>(AGE, AGEGR1),</span>
-<span id="cb26-7"><a></a>    <span class="at">type =</span> AGE <span class="sc">~</span> <span class="st">"continuous2"</span>,</span>
-<span id="cb26-8"><a></a>    <span class="at">statistic =</span> AGE <span class="sc">~</span> <span class="fu">c</span>(<span class="st">"{mean} ({sd})"</span>, <span class="st">"{median} ({p25}, {p75})"</span>)</span>
-<span id="cb26-9"><a></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb26-10"><a></a>  <span class="fu">add_overall</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb26-11"><a></a>  <span class="fu">add_stat_label</span>()</span>
-<span id="cb26-12"><a></a>tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16" data-code-line-numbers="|4-9|5|6|7|8|10|11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="fu">library</span>(gtsummary)</span>
+<span id="cb16-2"><a></a></span>
+<span id="cb16-3"><a></a>tbl <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(pharmaverseadam<span class="sc">::</span>adsl, SAFFL <span class="sc">==</span> <span class="st">"Y"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb16-4"><a></a>  <span class="fu">tbl_summary</span>(</span>
+<span id="cb16-5"><a></a>    <span class="at">by =</span> TRT01A,</span>
+<span id="cb16-6"><a></a>    <span class="at">include =</span> <span class="fu">c</span>(AGE, AGEGR1),</span>
+<span id="cb16-7"><a></a>    <span class="at">type =</span> AGE <span class="sc">~</span> <span class="st">"continuous2"</span>,</span>
+<span id="cb16-8"><a></a>    <span class="at">statistic =</span> AGE <span class="sc">~</span> <span class="fu">c</span>(<span class="st">"{mean} ({sd})"</span>, <span class="st">"{median} ({p25}, {p75})"</span>)</span>
+<span id="cb16-9"><a></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb16-10"><a></a>  <span class="fu">add_overall</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb16-11"><a></a>  <span class="fu">add_stat_label</span>()</span>
+<span id="cb16-12"><a></a>tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="ussiydablr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ussiydablr table {
+<div id="jmvydutqdw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jmvydutqdw table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ussiydablr thead, #ussiydablr tbody, #ussiydablr tfoot, #ussiydablr tr, #ussiydablr td, #ussiydablr th {
+#jmvydutqdw thead, #jmvydutqdw tbody, #jmvydutqdw tfoot, #jmvydutqdw tr, #jmvydutqdw td, #jmvydutqdw th {
   border-style: none;
 }
 
-#ussiydablr p {
+#jmvydutqdw p {
   margin: 0;
   padding: 0;
 }
 
-#ussiydablr .gt_table {
+#jmvydutqdw .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1155,12 +532,12 @@ Daniel D. Sjoberg, Nolan Steed
   border-left-color: #D3D3D3;
 }
 
-#ussiydablr .gt_caption {
+#jmvydutqdw .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ussiydablr .gt_title {
+#jmvydutqdw .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1172,7 +549,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-bottom-width: 0;
 }
 
-#ussiydablr .gt_subtitle {
+#jmvydutqdw .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1184,7 +561,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-top-width: 0;
 }
 
-#ussiydablr .gt_heading {
+#jmvydutqdw .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1196,13 +573,13 @@ Daniel D. Sjoberg, Nolan Steed
   border-right-color: #D3D3D3;
 }
 
-#ussiydablr .gt_bottom_border {
+#jmvydutqdw .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ussiydablr .gt_col_headings {
+#jmvydutqdw .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1217,7 +594,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-right-color: #D3D3D3;
 }
 
-#ussiydablr .gt_col_heading {
+#jmvydutqdw .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1237,7 +614,7 @@ Daniel D. Sjoberg, Nolan Steed
   overflow-x: hidden;
 }
 
-#ussiydablr .gt_column_spanner_outer {
+#jmvydutqdw .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1249,15 +626,15 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 4px;
 }
 
-#ussiydablr .gt_column_spanner_outer:first-child {
+#jmvydutqdw .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ussiydablr .gt_column_spanner_outer:last-child {
+#jmvydutqdw .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ussiydablr .gt_column_spanner {
+#jmvydutqdw .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1269,11 +646,11 @@ Daniel D. Sjoberg, Nolan Steed
   width: 100%;
 }
 
-#ussiydablr .gt_spanner_row {
+#jmvydutqdw .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ussiydablr .gt_group_heading {
+#jmvydutqdw .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1299,7 +676,7 @@ Daniel D. Sjoberg, Nolan Steed
   text-align: left;
 }
 
-#ussiydablr .gt_empty_group_heading {
+#jmvydutqdw .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1314,15 +691,15 @@ Daniel D. Sjoberg, Nolan Steed
   vertical-align: middle;
 }
 
-#ussiydablr .gt_from_md > :first-child {
+#jmvydutqdw .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ussiydablr .gt_from_md > :last-child {
+#jmvydutqdw .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ussiydablr .gt_row {
+#jmvydutqdw .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1341,7 +718,7 @@ Daniel D. Sjoberg, Nolan Steed
   overflow-x: hidden;
 }
 
-#ussiydablr .gt_stub {
+#jmvydutqdw .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1354,7 +731,7 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#ussiydablr .gt_stub_row_group {
+#jmvydutqdw .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1368,15 +745,15 @@ Daniel D. Sjoberg, Nolan Steed
   vertical-align: top;
 }
 
-#ussiydablr .gt_row_group_first td {
+#jmvydutqdw .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ussiydablr .gt_row_group_first th {
+#jmvydutqdw .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ussiydablr .gt_summary_row {
+#jmvydutqdw .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1386,16 +763,16 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#ussiydablr .gt_first_summary_row {
+#jmvydutqdw .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ussiydablr .gt_first_summary_row.thick {
+#jmvydutqdw .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ussiydablr .gt_last_summary_row {
+#jmvydutqdw .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1405,7 +782,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-bottom-color: #D3D3D3;
 }
 
-#ussiydablr .gt_grand_summary_row {
+#jmvydutqdw .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1415,7 +792,7 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#ussiydablr .gt_first_grand_summary_row {
+#jmvydutqdw .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1425,7 +802,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-top-color: #D3D3D3;
 }
 
-#ussiydablr .gt_last_grand_summary_row_top {
+#jmvydutqdw .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1435,11 +812,11 @@ Daniel D. Sjoberg, Nolan Steed
   border-bottom-color: #D3D3D3;
 }
 
-#ussiydablr .gt_striped {
+#jmvydutqdw .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ussiydablr .gt_table_body {
+#jmvydutqdw .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1448,7 +825,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-bottom-color: #D3D3D3;
 }
 
-#ussiydablr .gt_footnotes {
+#jmvydutqdw .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1462,7 +839,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-right-color: #D3D3D3;
 }
 
-#ussiydablr .gt_footnote {
+#jmvydutqdw .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1471,7 +848,7 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#ussiydablr .gt_sourcenotes {
+#jmvydutqdw .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1485,7 +862,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-right-color: #D3D3D3;
 }
 
-#ussiydablr .gt_sourcenote {
+#jmvydutqdw .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1493,72 +870,72 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#ussiydablr .gt_left {
+#jmvydutqdw .gt_left {
   text-align: left;
 }
 
-#ussiydablr .gt_center {
+#jmvydutqdw .gt_center {
   text-align: center;
 }
 
-#ussiydablr .gt_right {
+#jmvydutqdw .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ussiydablr .gt_font_normal {
+#jmvydutqdw .gt_font_normal {
   font-weight: normal;
 }
 
-#ussiydablr .gt_font_bold {
+#jmvydutqdw .gt_font_bold {
   font-weight: bold;
 }
 
-#ussiydablr .gt_font_italic {
+#jmvydutqdw .gt_font_italic {
   font-style: italic;
 }
 
-#ussiydablr .gt_super {
+#jmvydutqdw .gt_super {
   font-size: 65%;
 }
 
-#ussiydablr .gt_footnote_marks {
+#jmvydutqdw .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ussiydablr .gt_asterisk {
+#jmvydutqdw .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ussiydablr .gt_indent_1 {
+#jmvydutqdw .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ussiydablr .gt_indent_2 {
+#jmvydutqdw .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ussiydablr .gt_indent_3 {
+#jmvydutqdw .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ussiydablr .gt_indent_4 {
+#jmvydutqdw .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ussiydablr .gt_indent_5 {
+#jmvydutqdw .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ussiydablr .katex-display {
+#jmvydutqdw .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ussiydablr div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#jmvydutqdw div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1644,7 +1021,7 @@ Daniel D. Sjoberg, Nolan Steed
 <li>Extract the ARD from the table object</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a><span class="fu">gather_ard</span>(tbl) <span class="sc">|&gt;</span> purrr<span class="sc">::</span><span class="fu">pluck</span>(<span class="st">"tbl_summary"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a><span class="fu">gather_ard</span>(tbl) <span class="sc">|&gt;</span> purrr<span class="sc">::</span><span class="fu">pluck</span>(<span class="st">"tbl_summary"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>{cards} data frame: 79 x 12</code></pre>
 </div>
@@ -1653,13 +1030,13 @@ Daniel D. Sjoberg, Nolan Steed
 1  TRT01A      Placebo   AGEGR1            &gt;64         n          n    72
 2  TRT01A      Placebo   AGEGR1            &gt;64         N          N    86
 3  TRT01A      Placebo   AGEGR1            &gt;64         p          % 0.837
-4  TRT01A    Xanomeli…   AGEGR1            &gt;64         n          n    61
-5  TRT01A    Xanomeli…   AGEGR1            &gt;64         N          N    72
-6  TRT01A    Xanomeli…   AGEGR1            &gt;64         p          % 0.847
-7  TRT01A    Xanomeli…   AGEGR1            &gt;64         n          n    88
-8  TRT01A    Xanomeli…   AGEGR1            &gt;64         N          N    96
-9  TRT01A    Xanomeli…   AGEGR1            &gt;64         p          % 0.917
-10 TRT01A      Placebo   AGEGR1          18-64         n          n    14</code></pre>
+4  TRT01A      Placebo   AGEGR1          18-64         n          n    14
+5  TRT01A      Placebo   AGEGR1          18-64         N          N    86
+6  TRT01A      Placebo   AGEGR1          18-64         p          % 0.163
+7  TRT01A    Xanomeli…   AGEGR1            &gt;64         n          n    61
+8  TRT01A    Xanomeli…   AGEGR1            &gt;64         N          N    72
+9  TRT01A    Xanomeli…   AGEGR1            &gt;64         p          % 0.847
+10 TRT01A    Xanomeli…   AGEGR1          18-64         n          n    11</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>ℹ 69 more rows</code></pre>
@@ -1675,37 +1052,37 @@ Daniel D. Sjoberg, Nolan Steed
 <section id="demographics-example-ard-first" class="slide level2">
 <h2>Demographics Example: ARD-first</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33" data-code-line-numbers="|2-6|7-12|8|9|10|11|13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(pharmaverseadam<span class="sc">::</span>adsl, SAFFL <span class="sc">==</span> <span class="st">"Y"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb33-2"><a></a>  cards<span class="sc">::</span><span class="fu">ard_stack</span>(</span>
-<span id="cb33-3"><a></a>    <span class="at">.by =</span> TRT01A, <span class="at">.overall =</span> <span class="cn">TRUE</span>, <span class="at">.attributes =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb33-4"><a></a>    <span class="fu">ard_continuous</span>(<span class="at">variables =</span> AGE),</span>
-<span id="cb33-5"><a></a>    <span class="fu">ard_categorical</span>(<span class="at">variables =</span> AGEGR1)</span>
-<span id="cb33-6"><a></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb33-7"><a></a>  <span class="fu">tbl_ard_summary</span>(</span>
-<span id="cb33-8"><a></a>    <span class="at">by =</span> TRT01A,</span>
-<span id="cb33-9"><a></a>    <span class="at">type =</span> AGE <span class="sc">~</span> <span class="st">"continuous2"</span>,</span>
-<span id="cb33-10"><a></a>    <span class="at">statistic =</span> AGE <span class="sc">~</span> <span class="fu">c</span>(<span class="st">"{mean} ({sd})"</span>, <span class="st">"{median} ({p25}, {p75})"</span>),</span>
-<span id="cb33-11"><a></a>    <span class="at">overall =</span> <span class="cn">TRUE</span></span>
-<span id="cb33-12"><a></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb33-13"><a></a>  <span class="fu">add_stat_label</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23" data-code-line-numbers="|2-6|7-12|8|9|10|11|13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(pharmaverseadam<span class="sc">::</span>adsl, SAFFL <span class="sc">==</span> <span class="st">"Y"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb23-2"><a></a>  cards<span class="sc">::</span><span class="fu">ard_stack</span>(</span>
+<span id="cb23-3"><a></a>    <span class="at">.by =</span> TRT01A, <span class="at">.overall =</span> <span class="cn">TRUE</span>, <span class="at">.attributes =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb23-4"><a></a>    <span class="fu">ard_continuous</span>(<span class="at">variables =</span> AGE),</span>
+<span id="cb23-5"><a></a>    <span class="fu">ard_categorical</span>(<span class="at">variables =</span> AGEGR1)</span>
+<span id="cb23-6"><a></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb23-7"><a></a>  <span class="fu">tbl_ard_summary</span>(</span>
+<span id="cb23-8"><a></a>    <span class="at">by =</span> TRT01A,</span>
+<span id="cb23-9"><a></a>    <span class="at">type =</span> AGE <span class="sc">~</span> <span class="st">"continuous2"</span>,</span>
+<span id="cb23-10"><a></a>    <span class="at">statistic =</span> AGE <span class="sc">~</span> <span class="fu">c</span>(<span class="st">"{mean} ({sd})"</span>, <span class="st">"{median} ({p25}, {p75})"</span>),</span>
+<span id="cb23-11"><a></a>    <span class="at">overall =</span> <span class="cn">TRUE</span></span>
+<span id="cb23-12"><a></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb23-13"><a></a>  <span class="fu">add_stat_label</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="wbfbiprexf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#wbfbiprexf table {
+<div id="dqzlrizxsb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dqzlrizxsb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#wbfbiprexf thead, #wbfbiprexf tbody, #wbfbiprexf tfoot, #wbfbiprexf tr, #wbfbiprexf td, #wbfbiprexf th {
+#dqzlrizxsb thead, #dqzlrizxsb tbody, #dqzlrizxsb tfoot, #dqzlrizxsb tr, #dqzlrizxsb td, #dqzlrizxsb th {
   border-style: none;
 }
 
-#wbfbiprexf p {
+#dqzlrizxsb p {
   margin: 0;
   padding: 0;
 }
 
-#wbfbiprexf .gt_table {
+#dqzlrizxsb .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1731,12 +1108,12 @@ Daniel D. Sjoberg, Nolan Steed
   border-left-color: #D3D3D3;
 }
 
-#wbfbiprexf .gt_caption {
+#dqzlrizxsb .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#wbfbiprexf .gt_title {
+#dqzlrizxsb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1748,7 +1125,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-bottom-width: 0;
 }
 
-#wbfbiprexf .gt_subtitle {
+#dqzlrizxsb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1760,7 +1137,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-top-width: 0;
 }
 
-#wbfbiprexf .gt_heading {
+#dqzlrizxsb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1772,13 +1149,13 @@ Daniel D. Sjoberg, Nolan Steed
   border-right-color: #D3D3D3;
 }
 
-#wbfbiprexf .gt_bottom_border {
+#dqzlrizxsb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#wbfbiprexf .gt_col_headings {
+#dqzlrizxsb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1793,7 +1170,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-right-color: #D3D3D3;
 }
 
-#wbfbiprexf .gt_col_heading {
+#dqzlrizxsb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1813,7 +1190,7 @@ Daniel D. Sjoberg, Nolan Steed
   overflow-x: hidden;
 }
 
-#wbfbiprexf .gt_column_spanner_outer {
+#dqzlrizxsb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1825,15 +1202,15 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 4px;
 }
 
-#wbfbiprexf .gt_column_spanner_outer:first-child {
+#dqzlrizxsb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#wbfbiprexf .gt_column_spanner_outer:last-child {
+#dqzlrizxsb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#wbfbiprexf .gt_column_spanner {
+#dqzlrizxsb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1845,11 +1222,11 @@ Daniel D. Sjoberg, Nolan Steed
   width: 100%;
 }
 
-#wbfbiprexf .gt_spanner_row {
+#dqzlrizxsb .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#wbfbiprexf .gt_group_heading {
+#dqzlrizxsb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1875,7 +1252,7 @@ Daniel D. Sjoberg, Nolan Steed
   text-align: left;
 }
 
-#wbfbiprexf .gt_empty_group_heading {
+#dqzlrizxsb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1890,15 +1267,15 @@ Daniel D. Sjoberg, Nolan Steed
   vertical-align: middle;
 }
 
-#wbfbiprexf .gt_from_md > :first-child {
+#dqzlrizxsb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#wbfbiprexf .gt_from_md > :last-child {
+#dqzlrizxsb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#wbfbiprexf .gt_row {
+#dqzlrizxsb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1917,7 +1294,7 @@ Daniel D. Sjoberg, Nolan Steed
   overflow-x: hidden;
 }
 
-#wbfbiprexf .gt_stub {
+#dqzlrizxsb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1930,7 +1307,7 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#wbfbiprexf .gt_stub_row_group {
+#dqzlrizxsb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1944,15 +1321,15 @@ Daniel D. Sjoberg, Nolan Steed
   vertical-align: top;
 }
 
-#wbfbiprexf .gt_row_group_first td {
+#dqzlrizxsb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#wbfbiprexf .gt_row_group_first th {
+#dqzlrizxsb .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#wbfbiprexf .gt_summary_row {
+#dqzlrizxsb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1962,16 +1339,16 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#wbfbiprexf .gt_first_summary_row {
+#dqzlrizxsb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#wbfbiprexf .gt_first_summary_row.thick {
+#dqzlrizxsb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#wbfbiprexf .gt_last_summary_row {
+#dqzlrizxsb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1981,7 +1358,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-bottom-color: #D3D3D3;
 }
 
-#wbfbiprexf .gt_grand_summary_row {
+#dqzlrizxsb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1991,7 +1368,7 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#wbfbiprexf .gt_first_grand_summary_row {
+#dqzlrizxsb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2001,7 +1378,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-top-color: #D3D3D3;
 }
 
-#wbfbiprexf .gt_last_grand_summary_row_top {
+#dqzlrizxsb .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2011,11 +1388,11 @@ Daniel D. Sjoberg, Nolan Steed
   border-bottom-color: #D3D3D3;
 }
 
-#wbfbiprexf .gt_striped {
+#dqzlrizxsb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#wbfbiprexf .gt_table_body {
+#dqzlrizxsb .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2024,7 +1401,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-bottom-color: #D3D3D3;
 }
 
-#wbfbiprexf .gt_footnotes {
+#dqzlrizxsb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2038,7 +1415,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-right-color: #D3D3D3;
 }
 
-#wbfbiprexf .gt_footnote {
+#dqzlrizxsb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2047,7 +1424,7 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#wbfbiprexf .gt_sourcenotes {
+#dqzlrizxsb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2061,7 +1438,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-right-color: #D3D3D3;
 }
 
-#wbfbiprexf .gt_sourcenote {
+#dqzlrizxsb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2069,72 +1446,72 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#wbfbiprexf .gt_left {
+#dqzlrizxsb .gt_left {
   text-align: left;
 }
 
-#wbfbiprexf .gt_center {
+#dqzlrizxsb .gt_center {
   text-align: center;
 }
 
-#wbfbiprexf .gt_right {
+#dqzlrizxsb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#wbfbiprexf .gt_font_normal {
+#dqzlrizxsb .gt_font_normal {
   font-weight: normal;
 }
 
-#wbfbiprexf .gt_font_bold {
+#dqzlrizxsb .gt_font_bold {
   font-weight: bold;
 }
 
-#wbfbiprexf .gt_font_italic {
+#dqzlrizxsb .gt_font_italic {
   font-style: italic;
 }
 
-#wbfbiprexf .gt_super {
+#dqzlrizxsb .gt_super {
   font-size: 65%;
 }
 
-#wbfbiprexf .gt_footnote_marks {
+#dqzlrizxsb .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#wbfbiprexf .gt_asterisk {
+#dqzlrizxsb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#wbfbiprexf .gt_indent_1 {
+#dqzlrizxsb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#wbfbiprexf .gt_indent_2 {
+#dqzlrizxsb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#wbfbiprexf .gt_indent_3 {
+#dqzlrizxsb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#wbfbiprexf .gt_indent_4 {
+#dqzlrizxsb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#wbfbiprexf .gt_indent_5 {
+#dqzlrizxsb .gt_indent_5 {
   text-indent: 25px;
 }
 
-#wbfbiprexf .katex-display {
+#dqzlrizxsb .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#wbfbiprexf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#dqzlrizxsb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2213,6 +1590,704 @@ Daniel D. Sjoberg, Nolan Steed
 </div>
 </div>
 </div>
+</section></section>
+<section>
+<section id="our-pilot" class="title-slide slide level1 center">
+<h1>Our Pilot</h1>
+
+</section>
+<section id="our-ard-based-pilot" class="slide level2">
+<h2>Our ARD-based Pilot</h2>
+<ul>
+<li><p>We wanted to dip our toes into CDISC’s Analysis Results Standard (ARS)</p>
+<ul>
+<li><p>We did not try to implement the full model, just getting a taste</p></li>
+<li><p>Using <em>some</em> metadata to drive the creation of TLGs</p></li>
+<li><p>Using an ARD-first approach to create our TLGs, e.g.&nbsp;using the {cards} R package to create ARDs, and the {gtsummary} package for tables</p></li>
+</ul></li>
+<li><p>Report on our experience! What would we change if we were to do it again?</p></li>
+</ul>
+</section>
+<section id="what-we-liked" class="slide level2">
+<h2>What we liked!</h2>
+<ul>
+<li><p>Using {cards}+{cardx}+{gtsummary}, we created every summary for a trial read-out. 🕺🕺🕺</p></li>
+<li><p>These tools are general to allow us to create any table needed, whether it was a table of simple counts or complex statistical results.</p></li>
+<li><p>Nolan was the primary statistical programmer for this study.</p>
+<ul>
+<li><p>We did not have time for proper training on the new {cards} and {cardx} packages, nor for the {gtsummary} package.</p></li>
+<li><p>Despite no training, he was quickly able to pick up the packages and immediately begin using, which we attribute to the intuitive user interface. 🚀</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="what-we-liked-1" class="slide level2">
+<h2>What we liked!</h2>
+<ul>
+<li><p>We loved the ARD-based results, which made QC simple and straightforward.</p>
+<ul>
+<li>A highly structured data frame of results is straightforward to QC compared to a summary table or figure.</li>
+</ul></li>
+<li><p>The ARDs make re-use of the results simple as well.</p></li>
+<li><p>As long as we have both the ARD and the table/figure, we are happy with whatever order they are created.</p></li>
+</ul>
+</section>
+<section id="what-we-would-do-differently" class="slide level2">
+<h2>What we would do differently?</h2>
+<ul>
+<li><p>As {gtsummary} runs on ARDs, we found the requirement of creating the ARD first, then using it to create the summary table more complex than the process needed to be.</p>
+<ul>
+<li>ARDs can be extracted directly from any {gtsummary} and in many cases it is sufficient to create the table directly and take the ARD from the table object.</li>
+</ul></li>
+</ul>
+</section>
+<section id="what-we-would-do-differently-1" class="slide level2">
+<h2>What we would do differently?</h2>
+<ul>
+<li><p>The full ARS model is metadata driven. This also means the metadata dictate the precise layout of the tables.</p></li>
+<li><p>We preferred to write an R script for the persnickety formatting, rather than making those specifications in a metadata format.</p>
+<ul>
+<li>If a trial only reported “standard” tables, it would be much less of an issue to specify detailed meta data for layouts. But every trial (and in particular this pilot) has many bespoke tables not part of a standard library.</li>
+</ul></li>
+<li><p>We were still able to take advantage of the ARS attributes, such as tracability, re-use, and automation.</p></li>
+</ul>
+</section>
+<section id="section-2" class="slide level2">
+<h2></h2>
+<div class="larger">
+<p>🕺🕺 ARD Team 🕺🕺</p>
+</div>
+<div class="v-center-container">
+<p><img data-src="images/coauthors.png"></p>
+</div>
+<!-- ####################### END OF SLIDES ######################### -->
+</section>
+<section id="ards-uses-outside-of-the-ars" class="slide level2">
+<h2>ARDs uses outside of the ARS</h2>
+<div>
+<ul>
+<li class="fragment"><p>Rethinking QC</p>
+<ul>
+<li class="fragment">Highly structured data frame of results is much simpler to QC compared to statistics in a summary table or figure.</li>
+</ul></li>
+<li class="fragment"><p>Flexible data file types</p>
+<ul>
+<li class="fragment">ARD can be saved as a dataset (rds, xpt, parquet, etc.), YAML, or JSON file</li>
+</ul></li>
+<li class="fragment"><p>ARDs integrate with the {gtsummary} package to create summary tables</p></li>
+</ul>
+</div>
+</section>
+<section id="cardx-t-test-example" class="slide level2">
+<h2>{cardx} t-test Example</h2>
+<div class="small">
+<ul>
+<li><p>We see the results like the mean difference, the confidence interval, and p-value as expected.</p></li>
+<li><p>And we also see the function’s inputs, which is incredibly useful for re-use, e.g.&nbsp;we know the we did not use equal variances.</p></li>
+</ul>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a></a>pharmaverseadam<span class="sc">::</span>adsl <span class="sc">|&gt;</span> </span>
+<span id="cb24-2"><a></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(ARM <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Xanomeline High Dose"</span>, <span class="st">"Xanomeline Low Dose"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a></a>  cardx<span class="sc">::</span><span class="fu">ard_stats_t_test</span>(<span class="at">by =</span> ARM, <span class="at">variables =</span> AGE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>{cards} data frame: 14 x 9</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   group1 variable   context   stat_name stat_label      stat
+1     ARM      AGE stats_t_…    estimate  Mean Dif…    -1.286
+2     ARM      AGE stats_t_…   estimate1  Group 1 …    74.381
+3     ARM      AGE stats_t_…   estimate2  Group 2 …    75.667
+4     ARM      AGE stats_t_…   statistic  t Statis…     -1.03
+5     ARM      AGE stats_t_…     p.value    p-value     0.304
+6     ARM      AGE stats_t_…   parameter  Degrees …   165.595
+7     ARM      AGE stats_t_…    conf.low  CI Lower…     -3.75
+8     ARM      AGE stats_t_…   conf.high  CI Upper…     1.179
+9     ARM      AGE stats_t_…      method     method Welch Tw…
+10    ARM      AGE stats_t_… alternative  alternat… two.sided
+11    ARM      AGE stats_t_…          mu    H0 Mean         0
+12    ARM      AGE stats_t_…      paired  Paired t…     FALSE
+13    ARM      AGE stats_t_…   var.equal  Equal Va…     FALSE
+14    ARM      AGE stats_t_…  conf.level  CI Confi…      0.95</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ 3 more variables: fmt_fn, warning, error</code></pre>
+</div>
+</div>
+</section>
+<section id="cardx-regression" class="slide level2">
+<h2>{cardx} Regression</h2>
+<ul>
+<li>Includes functionality to summarize nearly every type of regression model in the R ecosystem:</li>
+</ul>
+<div class="small">
+<p><code>betareg::betareg()</code>, <code>biglm::bigglm()</code>, <code>brms::brm()</code>, <code>cmprsk::crr()</code>, <code>fixest::feglm()</code>, <code>fixest::femlm()</code>, <code>fixest::feNmlm()</code>, <code>fixest::feols()</code>, <code>gam::gam()</code>, <code>geepack::geeglm()</code>, <code>glmmTMB::glmmTMB()</code>, <code>lavaan::lavaan()</code>, <code>lfe::felm()</code>, <code>lme4::glmer.nb()</code>, <code>lme4::glmer()</code>, <code>lme4::lmer()</code>, <code>logitr::logitr()</code>, <code>MASS::glm.nb()</code>, <code>MASS::polr()</code>, <code>mgcv::gam()</code>, <code>mice::mira</code>, <code>mmrm::mmrm()</code>, <code>multgee::nomLORgee()</code>, <code>multgee::ordLORgee()</code>, <code>nnet::multinom()</code>, <code>ordinal::clm()</code>, <code>ordinal::clmm()</code>, <code>parsnip::model_fit</code>, <code>plm::plm()</code>, <code>pscl::hurdle()</code>, <code>pscl::zeroinfl()</code>, <code>rstanarm::stan_glm()</code>, <code>stats::aov()</code>, <code>stats::glm()</code>, <code>stats::lm()</code>, <code>stats::nls()</code>, <code>survey::svycoxph()</code>, <code>survey::svyglm()</code>, <code>survey::svyolr()</code>, <code>survival::cch()</code>, <code>survival::clogit()</code>, <code>survival::coxph()</code>, <code>survival::survreg()</code>, <code>tidycmprsk::crr()</code>, <code>VGAM::vglm()</code> (and more)</p>
+</div>
+</section>
+<section id="cardx-regression-example" class="slide level2">
+<h2>{cardx} Regression Example</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a></a><span class="fu">library</span>(survival); <span class="fu">library</span>(ggsurvfit)</span>
+<span id="cb28-2"><a></a></span>
+<span id="cb28-3"><a></a><span class="co"># build model</span></span>
+<span id="cb28-4"><a></a>mod <span class="ot">&lt;-</span> pharmaverseadam<span class="sc">::</span>adtte_onco <span class="sc">|&gt;</span> </span>
+<span id="cb28-5"><a></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(PARAM <span class="sc">%in%</span> <span class="st">"Progression Free Survival"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb28-6"><a></a>  <span class="fu">coxph</span>(<span class="fu">Surv_CNSR</span>() <span class="sc">~</span> ARM, <span class="at">data =</span> _)</span>
+<span id="cb28-7"><a></a></span>
+<span id="cb28-8"><a></a><span class="co"># put model in a summary table</span></span>
+<span id="cb28-9"><a></a>tbl <span class="ot">&lt;-</span> gtsummary<span class="sc">::</span><span class="fu">tbl_regression</span>(mod, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb28-10"><a></a>  gtsummary<span class="sc">::</span><span class="fu">add_n</span>(<span class="at">location =</span> <span class="fu">c</span>(<span class="st">'label'</span>, <span class="st">'level'</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb28-11"><a></a>  gtsummary<span class="sc">::</span><span class="fu">add_nevent</span>(<span class="at">location =</span> <span class="fu">c</span>(<span class="st">'label'</span>, <span class="st">'level'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="kzcuhdbfya" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kzcuhdbfya table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#kzcuhdbfya thead, #kzcuhdbfya tbody, #kzcuhdbfya tfoot, #kzcuhdbfya tr, #kzcuhdbfya td, #kzcuhdbfya th {
+  border-style: none;
+}
+
+#kzcuhdbfya p {
+  margin: 0;
+  padding: 0;
+}
+
+#kzcuhdbfya .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kzcuhdbfya .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#kzcuhdbfya .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kzcuhdbfya .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kzcuhdbfya .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kzcuhdbfya .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kzcuhdbfya .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kzcuhdbfya .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kzcuhdbfya .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kzcuhdbfya .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kzcuhdbfya .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kzcuhdbfya .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kzcuhdbfya .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#kzcuhdbfya .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#kzcuhdbfya .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kzcuhdbfya .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kzcuhdbfya .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kzcuhdbfya .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kzcuhdbfya .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kzcuhdbfya .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#kzcuhdbfya .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#kzcuhdbfya .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#kzcuhdbfya .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kzcuhdbfya .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#kzcuhdbfya .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#kzcuhdbfya .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kzcuhdbfya .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kzcuhdbfya .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kzcuhdbfya .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kzcuhdbfya .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kzcuhdbfya .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kzcuhdbfya .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kzcuhdbfya .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kzcuhdbfya .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kzcuhdbfya .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kzcuhdbfya .gt_left {
+  text-align: left;
+}
+
+#kzcuhdbfya .gt_center {
+  text-align: center;
+}
+
+#kzcuhdbfya .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kzcuhdbfya .gt_font_normal {
+  font-weight: normal;
+}
+
+#kzcuhdbfya .gt_font_bold {
+  font-weight: bold;
+}
+
+#kzcuhdbfya .gt_font_italic {
+  font-style: italic;
+}
+
+#kzcuhdbfya .gt_super {
+  font-size: 65%;
+}
+
+#kzcuhdbfya .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#kzcuhdbfya .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#kzcuhdbfya .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#kzcuhdbfya .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#kzcuhdbfya .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#kzcuhdbfya .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#kzcuhdbfya .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#kzcuhdbfya .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#kzcuhdbfya div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top" data-quarto-postprocess="true" style="table-layout:fixed;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
+<th id="stat_n" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>N</strong></th>
+<th id="stat_nevent" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>Event N</strong></th>
+<th id="estimate" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>HR</strong></th>
+<th id="conf.low" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>95% CI</strong></th>
+<th id="p.value" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>p-value</strong></th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">Description of Planned Arm</td>
+<td class="gt_row gt_center" headers="stat_n">254</td>
+<td class="gt_row gt_center" headers="stat_nevent">6</td>
+<td class="gt_row gt_center" headers="estimate"><br>
+</td>
+<td class="gt_row gt_center" headers="conf.low"><br>
+</td>
+<td class="gt_row gt_center" headers="p.value"><br>
+</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Placebo</td>
+<td class="gt_row gt_center" headers="stat_n">86</td>
+<td class="gt_row gt_center" headers="stat_nevent">3</td>
+<td class="gt_row gt_center" headers="estimate">—</td>
+<td class="gt_row gt_center" headers="conf.low">—</td>
+<td class="gt_row gt_center" headers="p.value"><br>
+</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Xanomeline High Dose</td>
+<td class="gt_row gt_center" headers="stat_n">84</td>
+<td class="gt_row gt_center" headers="stat_nevent">2</td>
+<td class="gt_row gt_center" headers="estimate">3.00</td>
+<td class="gt_row gt_center" headers="conf.low">0.39, 22.9</td>
+<td class="gt_row gt_center" headers="p.value">0.3</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Xanomeline Low Dose</td>
+<td class="gt_row gt_center" headers="stat_n">84</td>
+<td class="gt_row gt_center" headers="stat_nevent">1</td>
+<td class="gt_row gt_center" headers="estimate">1.27</td>
+<td class="gt_row gt_center" headers="conf.low">0.11, 14.3</td>
+<td class="gt_row gt_center" headers="p.value">0.8</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="odd">
+<td colspan="6" class="gt_sourcenote">Abbreviations: CI = Confidence Interval, HR = Hazard Ratio</td>
+</tr>
+</tfoot>
+
+</table>
+
+</div>
+</div>
+</div>
+<!-- ## {cardx} Regression Example -->
+<!-- The `cardx::ard_regression()` does **a lot** for us in the background. -->
+<!-- - Identifies the variable from the regression terms (i.e. groups levels of the same variable) -->
+<!-- - Identifies reference groups from categorical covariates -->
+<!-- - Finds variable labels from the source data frames -->
+<!-- - Knows the total N of the model, the number of events, and can do the same for each level of categorical variables -->
+<!-- - Contextually aware of slopes, odds ratios, hazard ratios, and incidence rate ratios -->
+<!-- - And much _**much**_ more. -->
+</section>
+<section id="when-things-go-wrong" class="slide level2">
+<h2>When things go wrong 😱</h2>
+<p>What happens when statistics are un-calculable?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a></a>ard_gone_wrong <span class="ot">&lt;-</span> </span>
+<span id="cb29-2"><a></a>  cards<span class="sc">::</span>ADSL <span class="sc">|&gt;</span> </span>
+<span id="cb29-3"><a></a>  cards<span class="sc">::</span><span class="fu">ard_continuous</span>(</span>
+<span id="cb29-4"><a></a>    <span class="at">by =</span> ARM,</span>
+<span id="cb29-5"><a></a>    <span class="at">variable =</span> AGEGR1,</span>
+<span id="cb29-6"><a></a>    <span class="at">statistic =</span> <span class="sc">~</span><span class="fu">list</span>(<span class="at">kurtosis =</span> \(x) e1071<span class="sc">::</span><span class="fu">kurtosis</span>(x))</span>
+<span id="cb29-7"><a></a>  )</span>
+<span id="cb29-8"><a></a>ard_gone_wrong</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>{cards} data frame: 3 x 10</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  group1 group1_level variable stat_name stat_label stat   warning     error
+1    ARM      Placebo   AGEGR1  kurtosis   kurtosis      argument… non-nume…
+2    ARM    Xanomeli…   AGEGR1  kurtosis   kurtosis      argument… non-nume…
+3    ARM    Xanomeli…   AGEGR1  kurtosis   kurtosis      argument… non-nume…</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ 2 more variables: context, fmt_fn</code></pre>
+</div>
+</div>
+<div class="fragment">
+<div class="sourceCode" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a></a>cards<span class="sc">::</span><span class="fu">print_ard_conditions</span>(ard_gone_wrong)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img data-src="images/ard-error-msg.png"></p>
+</div>
 </section>
 <section id="gtsummary-extras" class="slide level2">
 <h2>{gtsummary} extras</h2>
@@ -2242,23 +2317,23 @@ Daniel D. Sjoberg, Nolan Steed
 <span id="cb34-3"><a></a>  <span class="fu">modify_column_alignment</span>(<span class="fu">everything</span>(), <span class="st">"left"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb34-4"><a></a>  <span class="fu">as_gt</span>(<span class="at">groupname_col =</span> <span class="st">"USUBJID"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="ttksajfhis" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ttksajfhis table {
+<div id="gugedpooig" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#gugedpooig table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ttksajfhis thead, #ttksajfhis tbody, #ttksajfhis tfoot, #ttksajfhis tr, #ttksajfhis td, #ttksajfhis th {
+#gugedpooig thead, #gugedpooig tbody, #gugedpooig tfoot, #gugedpooig tr, #gugedpooig td, #gugedpooig th {
   border-style: none;
 }
 
-#ttksajfhis p {
+#gugedpooig p {
   margin: 0;
   padding: 0;
 }
 
-#ttksajfhis .gt_table {
+#gugedpooig .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2284,12 +2359,12 @@ Daniel D. Sjoberg, Nolan Steed
   border-left-color: #D3D3D3;
 }
 
-#ttksajfhis .gt_caption {
+#gugedpooig .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ttksajfhis .gt_title {
+#gugedpooig .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2301,7 +2376,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-bottom-width: 0;
 }
 
-#ttksajfhis .gt_subtitle {
+#gugedpooig .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2313,7 +2388,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-top-width: 0;
 }
 
-#ttksajfhis .gt_heading {
+#gugedpooig .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2325,13 +2400,13 @@ Daniel D. Sjoberg, Nolan Steed
   border-right-color: #D3D3D3;
 }
 
-#ttksajfhis .gt_bottom_border {
+#gugedpooig .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ttksajfhis .gt_col_headings {
+#gugedpooig .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2346,7 +2421,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-right-color: #D3D3D3;
 }
 
-#ttksajfhis .gt_col_heading {
+#gugedpooig .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2366,7 +2441,7 @@ Daniel D. Sjoberg, Nolan Steed
   overflow-x: hidden;
 }
 
-#ttksajfhis .gt_column_spanner_outer {
+#gugedpooig .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2378,15 +2453,15 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 4px;
 }
 
-#ttksajfhis .gt_column_spanner_outer:first-child {
+#gugedpooig .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ttksajfhis .gt_column_spanner_outer:last-child {
+#gugedpooig .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ttksajfhis .gt_column_spanner {
+#gugedpooig .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2398,11 +2473,11 @@ Daniel D. Sjoberg, Nolan Steed
   width: 100%;
 }
 
-#ttksajfhis .gt_spanner_row {
+#gugedpooig .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ttksajfhis .gt_group_heading {
+#gugedpooig .gt_group_heading {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2428,7 +2503,7 @@ Daniel D. Sjoberg, Nolan Steed
   text-align: left;
 }
 
-#ttksajfhis .gt_empty_group_heading {
+#gugedpooig .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2443,15 +2518,15 @@ Daniel D. Sjoberg, Nolan Steed
   vertical-align: middle;
 }
 
-#ttksajfhis .gt_from_md > :first-child {
+#gugedpooig .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ttksajfhis .gt_from_md > :last-child {
+#gugedpooig .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ttksajfhis .gt_row {
+#gugedpooig .gt_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2470,7 +2545,7 @@ Daniel D. Sjoberg, Nolan Steed
   overflow-x: hidden;
 }
 
-#ttksajfhis .gt_stub {
+#gugedpooig .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2483,7 +2558,7 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#ttksajfhis .gt_stub_row_group {
+#gugedpooig .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2497,15 +2572,15 @@ Daniel D. Sjoberg, Nolan Steed
   vertical-align: top;
 }
 
-#ttksajfhis .gt_row_group_first td {
+#gugedpooig .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ttksajfhis .gt_row_group_first th {
+#gugedpooig .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ttksajfhis .gt_summary_row {
+#gugedpooig .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2515,16 +2590,16 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#ttksajfhis .gt_first_summary_row {
+#gugedpooig .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ttksajfhis .gt_first_summary_row.thick {
+#gugedpooig .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ttksajfhis .gt_last_summary_row {
+#gugedpooig .gt_last_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2534,7 +2609,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-bottom-color: #D3D3D3;
 }
 
-#ttksajfhis .gt_grand_summary_row {
+#gugedpooig .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2544,7 +2619,7 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#ttksajfhis .gt_first_grand_summary_row {
+#gugedpooig .gt_first_grand_summary_row {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2554,7 +2629,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-top-color: #D3D3D3;
 }
 
-#ttksajfhis .gt_last_grand_summary_row_top {
+#gugedpooig .gt_last_grand_summary_row_top {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
@@ -2564,11 +2639,11 @@ Daniel D. Sjoberg, Nolan Steed
   border-bottom-color: #D3D3D3;
 }
 
-#ttksajfhis .gt_striped {
+#gugedpooig .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ttksajfhis .gt_table_body {
+#gugedpooig .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2577,7 +2652,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-bottom-color: #D3D3D3;
 }
 
-#ttksajfhis .gt_footnotes {
+#gugedpooig .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2591,7 +2666,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-right-color: #D3D3D3;
 }
 
-#ttksajfhis .gt_footnote {
+#gugedpooig .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 1px;
@@ -2600,7 +2675,7 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#ttksajfhis .gt_sourcenotes {
+#gugedpooig .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2614,7 +2689,7 @@ Daniel D. Sjoberg, Nolan Steed
   border-right-color: #D3D3D3;
 }
 
-#ttksajfhis .gt_sourcenote {
+#gugedpooig .gt_sourcenote {
   font-size: 90%;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -2622,72 +2697,72 @@ Daniel D. Sjoberg, Nolan Steed
   padding-right: 5px;
 }
 
-#ttksajfhis .gt_left {
+#gugedpooig .gt_left {
   text-align: left;
 }
 
-#ttksajfhis .gt_center {
+#gugedpooig .gt_center {
   text-align: center;
 }
 
-#ttksajfhis .gt_right {
+#gugedpooig .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ttksajfhis .gt_font_normal {
+#gugedpooig .gt_font_normal {
   font-weight: normal;
 }
 
-#ttksajfhis .gt_font_bold {
+#gugedpooig .gt_font_bold {
   font-weight: bold;
 }
 
-#ttksajfhis .gt_font_italic {
+#gugedpooig .gt_font_italic {
   font-style: italic;
 }
 
-#ttksajfhis .gt_super {
+#gugedpooig .gt_super {
   font-size: 65%;
 }
 
-#ttksajfhis .gt_footnote_marks {
+#gugedpooig .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ttksajfhis .gt_asterisk {
+#gugedpooig .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ttksajfhis .gt_indent_1 {
+#gugedpooig .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ttksajfhis .gt_indent_2 {
+#gugedpooig .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ttksajfhis .gt_indent_3 {
+#gugedpooig .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ttksajfhis .gt_indent_4 {
+#gugedpooig .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ttksajfhis .gt_indent_5 {
+#gugedpooig .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ttksajfhis .katex-display {
+#gugedpooig .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ttksajfhis div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#gugedpooig div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2752,18 +2827,9 @@ Daniel D. Sjoberg, Nolan Steed
 <section id="gtsummary-extras-2" class="slide level2">
 <h2>{gtsummary} extras</h2>
 
-<img data-src="images/gtsummary_rmarkdown.png" class="r-stretch"></section>
-<section id="section-2" class="slide level2">
-<h2></h2>
-<div class="larger">
-<p>🕺🕺 ARD Team 🕺🕺</p>
-</div>
-<div class="v-center-container">
-<p><img data-src="images/coauthors.png"></p>
-</div>
 
 
-</section></section>
+<img data-src="images/gtsummary_rmarkdown.png" class="r-stretch"></section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="images/cards-cardx-gtsummary-hex.png" class="slide-logo"></p>

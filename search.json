@@ -1,10 +1,10 @@
 [
   {
-    "objectID": "slides/index.html#what-are-we-doing-here-today",
-    "href": "slides/index.html#what-are-we-doing-here-today",
+    "objectID": "slides/index.html#todays-plan",
+    "href": "slides/index.html#todays-plan",
     "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
-    "section": "What are we doing here today?",
-    "text": "What are we doing here today?\n\nBriefest introduction into CDISC’s Analysis Results Standard (ARS)\nWhere Analysis Results Datasets (ARDs) fits under the umbrella of ARS\nHow to utilize ARDs to facilitate reporting with and without the ARS\n\nUsing {cards} to build ARDs and {gtsummary} for reporting"
+    "section": "Today’s Plan",
+    "text": "Today’s Plan\n\nDiscuss our experience using ARD-first approach for TLGs.\nBut first, a little background\n\nCDISC’s Analysis Results Standard (ARS)\nARDs with the {cards}+{cardx} packages\nTables with the {gtsummary} package"
   },
   {
     "objectID": "slides/index.html#cdiscs-analysis-results-standard-ars",
@@ -25,7 +25,7 @@
     "href": "slides/index.html#cdiscs-analysis-results-standard-ars-2",
     "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
     "section": "CDISC’s Analysis Results Standard (ARS)",
-    "text": "CDISC’s Analysis Results Standard (ARS)\n\n\nThe ARS provides a metadata-driven infrastructure for analysis\n{cards} serves as the engine for the analysis"
+    "text": "CDISC’s Analysis Results Standard (ARS)\n\n\nThe ARS provides a metadata-driven infrastructure for analysis\n{cards} serves as the engine for the analysis\n{gtsummary} is the engine for summary tables"
   },
   {
     "objectID": "slides/index.html#analysis-results-data-ard",
@@ -42,18 +42,11 @@
     "text": "Analysis Results Data (ARD)\n\nAfter the initial creation of an ARD, the results can later be re-used again and again for subsequent reporting needs."
   },
   {
-    "objectID": "slides/index.html#ards-uses-outside-of-the-ars",
-    "href": "slides/index.html#ards-uses-outside-of-the-ars",
-    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
-    "section": "ARDs uses outside of the ARS",
-    "text": "ARDs uses outside of the ARS\n\n\nRethinking QC\n\nHighly structured data frame of results is much simpler to QC compared to statistics in a summary table or figure.\n\nFlexible data file types\n\nARD can be saved as a dataset (rds, xpt, parquet, etc.), YAML, or JSON file\n\nARDs integrate with the {gtsummary} package to create summary tables"
-  },
-  {
     "objectID": "slides/index.html#cards-introduction",
     "href": "slides/index.html#cards-introduction",
     "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
     "section": "{cards}: Introduction",
-    "text": "{cards}: Introduction\n\n\nPart of the Pharmaverse\nContains a variety of utilities for creating ARDs\nCan be used within the ARS workflow and separately\n45k downloads per month 🤯"
+    "text": "{cards}: Introduction\n\n\nPart of the Pharmaverse\nContains a variety of utilities for creating ARDs\nCan be used within the ARS workflow and separately\n52K downloads per month 🤯"
   },
   {
     "objectID": "slides/index.html#what-does-an-ard-look-like",
@@ -74,7 +67,7 @@
     "href": "slides/index.html#cards-ard_categorical",
     "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
     "section": "{cards}: ard_categorical()",
-    "text": "{cards}: ard_categorical()\n\nADSL |&gt; \n  ard_categorical(\n    by = ARM,\n    variables = AGEGR1\n  ) \n\n{cards} data frame: 27 x 11\n\n\n   group1 group1_level variable variable_level stat_name stat_label  stat\n1     ARM      Placebo   AGEGR1            &lt;65         n          n    14\n2     ARM      Placebo   AGEGR1            &lt;65         N          N    86\n3     ARM      Placebo   AGEGR1            &lt;65         p          % 0.163\n4     ARM    Xanomeli…   AGEGR1            &lt;65         n          n    11\n5     ARM    Xanomeli…   AGEGR1            &lt;65         N          N    84\n6     ARM    Xanomeli…   AGEGR1            &lt;65         p          % 0.131\n7     ARM    Xanomeli…   AGEGR1            &lt;65         n          n     8\n8     ARM    Xanomeli…   AGEGR1            &lt;65         N          N    84\n9     ARM    Xanomeli…   AGEGR1            &lt;65         p          % 0.095\n10    ARM      Placebo   AGEGR1            &gt;80         n          n    30\n\n\nℹ 17 more rows\n\n\nℹ Use `print(n = ...)` to see more rows\n\n\nℹ 4 more variables: context, fmt_fn, warning, error\n\n\n\nAny unobserved levels of the variables appear in the ARD."
+    "text": "{cards}: ard_categorical()\n\nADSL |&gt; \n  ard_categorical(\n    by = ARM,\n    variables = AGEGR1\n  ) \n\n{cards} data frame: 27 x 11\n\n\n   group1 group1_level variable variable_level stat_name stat_label  stat\n1     ARM      Placebo   AGEGR1            &lt;65         n          n    14\n2     ARM      Placebo   AGEGR1            &lt;65         N          N    86\n3     ARM      Placebo   AGEGR1            &lt;65         p          % 0.163\n4     ARM      Placebo   AGEGR1            &gt;80         n          n    30\n5     ARM      Placebo   AGEGR1            &gt;80         N          N    86\n6     ARM      Placebo   AGEGR1            &gt;80         p          % 0.349\n7     ARM      Placebo   AGEGR1          65-80         n          n    42\n8     ARM      Placebo   AGEGR1          65-80         N          N    86\n9     ARM      Placebo   AGEGR1          65-80         p          % 0.488\n10    ARM    Xanomeli…   AGEGR1            &lt;65         n          n    11\n\n\nℹ 17 more rows\n\n\nℹ Use `print(n = ...)` to see more rows\n\n\nℹ 4 more variables: context, fmt_fn, warning, error\n\n\n\nAny unobserved levels of the variables appear in the ARD."
   },
   {
     "objectID": "slides/index.html#cards-other-summary-functions",
@@ -95,7 +88,98 @@
     "href": "slides/index.html#cardx-1",
     "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
     "section": "{cardx}",
-    "text": "{cardx}\n\nExports ARD frameworks for statistical analyses from many packages\n\n\n  - {stats}\n  - {car}\n  - {effectsize}\n  - {emmeans}\n  - {geepack}\n  - {lme4}\n  - {parameters}\n  - {smd}\n  - {survey}\n  - {survival}\n\n\nThis list is growing (rather quickly) 🌱"
+    "text": "{cardx}\n\nExports ARD frameworks for statistical analyses from many packages\n\n\n  - {stats}\n  - {car}\n  - {effectsize}\n  - {emmeans}\n  - {geepack}\n  - {lme4}\n  - {parameters}\n  - {smd}\n  - {survey}\n  - {survival}\n\n\nThis list is growing (rather quickly) 🌱\n\n\n\n{cards} provides a general framework to easily implement any method. {cardx} provides a nicer user experience for common methods."
+  },
+  {
+    "objectID": "slides/index.html#section",
+    "href": "slides/index.html#section",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "",
+    "text": "How it started\n\n\nBegan to address reproducible issues while working in academia\nGoal was to build a package to summarize study results with code that was both simple and customizable\nFirst release in May 2019\n\n\n\nHow it’s going\n\n\nThe stats\n\n1,300,000+ installations from CRAN\n1100+ GitHub stars\n300+ contributors\n50+ code contributors"
+  },
+  {
+    "objectID": "slides/index.html#section-1",
+    "href": "slides/index.html#section-1",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "",
+    "text": "Won the 2021 American Statistical Association (ASA) Innovation in Programming Award\n\n\n\nAgustin Calatroni and I won the 2024 Posit Pharma Table Contest by re-creating an entire CSR with the {gtsummary} package"
+  },
+  {
+    "objectID": "slides/index.html#gtsummary-runs-on-ards",
+    "href": "slides/index.html#gtsummary-runs-on-ards",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "{gtsummary} runs on ARDs!",
+    "text": "{gtsummary} runs on ARDs!"
+  },
+  {
+    "objectID": "slides/index.html#demographics-example",
+    "href": "slides/index.html#demographics-example",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "Demographics Example",
+    "text": "Demographics Example\n\nlibrary(gtsummary)\n\ntbl &lt;- dplyr::filter(pharmaverseadam::adsl, SAFFL == \"Y\") |&gt; \n  tbl_summary(\n    by = TRT01A,\n    include = c(AGE, AGEGR1),\n    type = AGE ~ \"continuous2\",\n    statistic = AGE ~ c(\"{mean} ({sd})\", \"{median} ({p25}, {p75})\")\n  ) |&gt; \n  add_overall() |&gt; \n  add_stat_label()\ntbl\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCharacteristic\nOverall N = 254\nPlacebo N = 86\nXanomeline High Dose N = 72\nXanomeline Low Dose N = 96\n\n\n\n\nAge\n\n\n\n\n\n\n\n\n\n\n    Mean (SD)\n75 (8)\n75 (9)\n74 (8)\n76 (8)\n\n\n    Median (Q1, Q3)\n77 (70, 81)\n76 (69, 82)\n76 (70, 79)\n78 (71, 82)\n\n\nPooled Age Group 1, n (%)\n\n\n\n\n\n\n\n\n\n\n    &gt;64\n221 (87%)\n72 (84%)\n61 (85%)\n88 (92%)\n\n\n    18-64\n33 (13%)\n14 (16%)\n11 (15%)\n8 (8.3%)"
+  },
+  {
+    "objectID": "slides/index.html#demographics-example-1",
+    "href": "slides/index.html#demographics-example-1",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "Demographics Example",
+    "text": "Demographics Example\n\nExtract the ARD from the table object\n\n\ngather_ard(tbl) |&gt; purrr::pluck(\"tbl_summary\")\n\n{cards} data frame: 79 x 12\n\n\n   group1 group1_level variable variable_level stat_name stat_label  stat\n1  TRT01A      Placebo   AGEGR1            &gt;64         n          n    72\n2  TRT01A      Placebo   AGEGR1            &gt;64         N          N    86\n3  TRT01A      Placebo   AGEGR1            &gt;64         p          % 0.837\n4  TRT01A      Placebo   AGEGR1          18-64         n          n    14\n5  TRT01A      Placebo   AGEGR1          18-64         N          N    86\n6  TRT01A      Placebo   AGEGR1          18-64         p          % 0.163\n7  TRT01A    Xanomeli…   AGEGR1            &gt;64         n          n    61\n8  TRT01A    Xanomeli…   AGEGR1            &gt;64         N          N    72\n9  TRT01A    Xanomeli…   AGEGR1            &gt;64         p          % 0.847\n10 TRT01A    Xanomeli…   AGEGR1          18-64         n          n    11\n\n\nℹ 69 more rows\n\n\nℹ Use `print(n = ...)` to see more rows\n\n\nℹ 5 more variables: context, fmt_fn, warning, error, gts_column"
+  },
+  {
+    "objectID": "slides/index.html#demographics-example-ard-first",
+    "href": "slides/index.html#demographics-example-ard-first",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "Demographics Example: ARD-first",
+    "text": "Demographics Example: ARD-first\n\ndplyr::filter(pharmaverseadam::adsl, SAFFL == \"Y\") |&gt; \n  cards::ard_stack(\n    .by = TRT01A, .overall = TRUE, .attributes = TRUE,\n    ard_continuous(variables = AGE),\n    ard_categorical(variables = AGEGR1)\n  ) |&gt; \n  tbl_ard_summary(\n    by = TRT01A,\n    type = AGE ~ \"continuous2\",\n    statistic = AGE ~ c(\"{mean} ({sd})\", \"{median} ({p25}, {p75})\"),\n    overall = TRUE\n  ) |&gt; \n  add_stat_label()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCharacteristic\nOverall\nPlacebo\nXanomeline High Dose\nXanomeline Low Dose\n\n\n\n\nAge\n\n\n\n\n\n\n\n\n\n\n    Mean (SD)\n75.1 (8.2)\n75.2 (8.6)\n73.8 (7.9)\n76.0 (8.1)\n\n\n    Median (Q1, Q3)\n77.0 (70.0, 81.0)\n76.0 (69.0, 82.0)\n75.5 (70.0, 79.0)\n78.0 (71.0, 82.0)\n\n\nPooled Age Group 1, n (%)\n\n\n\n\n\n\n\n\n\n\n    &gt;64\n221 (87.0%)\n72 (83.7%)\n61 (84.7%)\n88 (91.7%)\n\n\n    18-64\n33 (13.0%)\n14 (16.3%)\n11 (15.3%)\n8 (8.3%)"
+  },
+  {
+    "objectID": "slides/index.html#our-ard-based-pilot",
+    "href": "slides/index.html#our-ard-based-pilot",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "Our ARD-based Pilot",
+    "text": "Our ARD-based Pilot\n\nWe wanted to dip our toes into CDISC’s Analysis Results Standard (ARS)\n\nWe did not try to implement the full model, just getting a taste\nUsing some metadata to drive the creation of TLGs\nUsing an ARD-first approach to create our TLGs, e.g. using the {cards} R package to create ARDs, and the {gtsummary} package for tables\n\nReport on our experience! What would we change if we were to do it again?"
+  },
+  {
+    "objectID": "slides/index.html#what-we-liked",
+    "href": "slides/index.html#what-we-liked",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "What we liked!",
+    "text": "What we liked!\n\nUsing {cards}+{cardx}+{gtsummary}, we created every summary for a trial read-out. 🕺🕺🕺\nThese tools are general to allow us to create any table needed, whether it was a table of simple counts or complex statistical results.\nNolan was the primary statistical programmer for this study.\n\nWe did not have time for proper training on the new {cards} and {cardx} packages, nor for the {gtsummary} package.\nDespite no training, he was quickly able to pick up the packages and immediately begin using, which we attribute to the intuitive user interface. 🚀"
+  },
+  {
+    "objectID": "slides/index.html#what-we-liked-1",
+    "href": "slides/index.html#what-we-liked-1",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "What we liked!",
+    "text": "What we liked!\n\nWe loved the ARD-based results, which made QC simple and straightforward.\n\nA highly structured data frame of results is straightforward to QC compared to a summary table or figure.\n\nThe ARDs make re-use of the results simple as well.\nAs long as we have both the ARD and the table/figure, we are happy with whatever order they are created."
+  },
+  {
+    "objectID": "slides/index.html#what-we-would-do-differently",
+    "href": "slides/index.html#what-we-would-do-differently",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "What we would do differently?",
+    "text": "What we would do differently?\n\nAs {gtsummary} runs on ARDs, we found the requirement of creating the ARD first, then using it to create the summary table more complex than the process needed to be.\n\nARDs can be extracted directly from any {gtsummary} and in many cases it is sufficient to create the table directly and take the ARD from the table object."
+  },
+  {
+    "objectID": "slides/index.html#what-we-would-do-differently-1",
+    "href": "slides/index.html#what-we-would-do-differently-1",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "What we would do differently?",
+    "text": "What we would do differently?\n\nThe full ARS model is metadata driven. This also means the metadata dictate the precise layout of the tables.\nWe preferred to write an R script for the persnickety formatting, rather than making those specifications in a metadata format.\n\nIf a trial only reported “standard” tables, it would be much less of an issue to specify detailed meta data for layouts. But every trial (and in particular this pilot) has many bespoke tables not part of a standard library.\n\nWe were still able to take advantage of the ARS attributes, such as tracability, re-use, and automation."
+  },
+  {
+    "objectID": "slides/index.html#section-2",
+    "href": "slides/index.html#section-2",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "",
+    "text": "🕺🕺 ARD Team 🕺🕺"
+  },
+  {
+    "objectID": "slides/index.html#ards-uses-outside-of-the-ars",
+    "href": "slides/index.html#ards-uses-outside-of-the-ars",
+    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
+    "section": "ARDs uses outside of the ARS",
+    "text": "ARDs uses outside of the ARS\n\n\nRethinking QC\n\nHighly structured data frame of results is much simpler to QC compared to statistics in a summary table or figure.\n\nFlexible data file types\n\nARD can be saved as a dataset (rds, xpt, parquet, etc.), YAML, or JSON file\n\nARDs integrate with the {gtsummary} package to create summary tables"
   },
   {
     "objectID": "slides/index.html#cardx-t-test-example",
@@ -126,48 +210,6 @@
     "text": "When things go wrong 😱\nWhat happens when statistics are un-calculable?\n\nard_gone_wrong &lt;- \n  cards::ADSL |&gt; \n  cards::ard_continuous(\n    by = ARM,\n    variable = AGEGR1,\n    statistic = ~list(kurtosis = \\(x) e1071::kurtosis(x))\n  )\nard_gone_wrong\n\n{cards} data frame: 3 x 10\n\n\n  group1 group1_level variable stat_name stat_label stat   warning     error\n1    ARM      Placebo   AGEGR1  kurtosis   kurtosis      argument… non-nume…\n2    ARM    Xanomeli…   AGEGR1  kurtosis   kurtosis      argument… non-nume…\n3    ARM    Xanomeli…   AGEGR1  kurtosis   kurtosis      argument… non-nume…\n\n\nℹ 2 more variables: context, fmt_fn\n\n\n\ncards::print_ard_conditions(ard_gone_wrong)"
   },
   {
-    "objectID": "slides/index.html#section",
-    "href": "slides/index.html#section",
-    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
-    "section": "",
-    "text": "How it started\n\n\nBegan to address reproducible issues while working in academia\nGoal was to build a package to summarize study results with code that was both simple and customizable\nFirst release in May 2019\n\n\n\nHow it’s going\n\n\nThe stats\n\n1,200,000+ installations from CRAN\n1000+ GitHub stars\n300+ contributors\n~50 code contributors"
-  },
-  {
-    "objectID": "slides/index.html#section-1",
-    "href": "slides/index.html#section-1",
-    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
-    "section": "",
-    "text": "Won the 2021 American Statistical Association (ASA) Innovation in Programming Award\n\n\n\nAgustin Calatroni and I won the 2024 Posit Pharma Table Contest by re-creating an entire CSR with the {gtsummary} package"
-  },
-  {
-    "objectID": "slides/index.html#gtsummary-runs-on-ards",
-    "href": "slides/index.html#gtsummary-runs-on-ards",
-    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
-    "section": "{gtsummary} runs on ARDs!",
-    "text": "{gtsummary} runs on ARDs!"
-  },
-  {
-    "objectID": "slides/index.html#demographics-example",
-    "href": "slides/index.html#demographics-example",
-    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
-    "section": "Demographics Example",
-    "text": "Demographics Example\n\nlibrary(gtsummary)\n\ntbl &lt;- dplyr::filter(pharmaverseadam::adsl, SAFFL == \"Y\") |&gt; \n  tbl_summary(\n    by = TRT01A,\n    include = c(AGE, AGEGR1),\n    type = AGE ~ \"continuous2\",\n    statistic = AGE ~ c(\"{mean} ({sd})\", \"{median} ({p25}, {p75})\")\n  ) |&gt; \n  add_overall() |&gt; \n  add_stat_label()\ntbl\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCharacteristic\nOverall N = 254\nPlacebo N = 86\nXanomeline High Dose N = 72\nXanomeline Low Dose N = 96\n\n\n\n\nAge\n\n\n\n\n\n\n\n\n\n\n    Mean (SD)\n75 (8)\n75 (9)\n74 (8)\n76 (8)\n\n\n    Median (Q1, Q3)\n77 (70, 81)\n76 (69, 82)\n76 (70, 79)\n78 (71, 82)\n\n\nPooled Age Group 1, n (%)\n\n\n\n\n\n\n\n\n\n\n    &gt;64\n221 (87%)\n72 (84%)\n61 (85%)\n88 (92%)\n\n\n    18-64\n33 (13%)\n14 (16%)\n11 (15%)\n8 (8.3%)"
-  },
-  {
-    "objectID": "slides/index.html#demographics-example-1",
-    "href": "slides/index.html#demographics-example-1",
-    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
-    "section": "Demographics Example",
-    "text": "Demographics Example\n\nExtract the ARD from the table object\n\n\ngather_ard(tbl) |&gt; purrr::pluck(\"tbl_summary\")\n\n{cards} data frame: 79 x 12\n\n\n   group1 group1_level variable variable_level stat_name stat_label  stat\n1  TRT01A      Placebo   AGEGR1            &gt;64         n          n    72\n2  TRT01A      Placebo   AGEGR1            &gt;64         N          N    86\n3  TRT01A      Placebo   AGEGR1            &gt;64         p          % 0.837\n4  TRT01A    Xanomeli…   AGEGR1            &gt;64         n          n    61\n5  TRT01A    Xanomeli…   AGEGR1            &gt;64         N          N    72\n6  TRT01A    Xanomeli…   AGEGR1            &gt;64         p          % 0.847\n7  TRT01A    Xanomeli…   AGEGR1            &gt;64         n          n    88\n8  TRT01A    Xanomeli…   AGEGR1            &gt;64         N          N    96\n9  TRT01A    Xanomeli…   AGEGR1            &gt;64         p          % 0.917\n10 TRT01A      Placebo   AGEGR1          18-64         n          n    14\n\n\nℹ 69 more rows\n\n\nℹ Use `print(n = ...)` to see more rows\n\n\nℹ 5 more variables: context, fmt_fn, warning, error, gts_column"
-  },
-  {
-    "objectID": "slides/index.html#demographics-example-ard-first",
-    "href": "slides/index.html#demographics-example-ard-first",
-    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
-    "section": "Demographics Example: ARD-first",
-    "text": "Demographics Example: ARD-first\n\ndplyr::filter(pharmaverseadam::adsl, SAFFL == \"Y\") |&gt; \n  cards::ard_stack(\n    .by = TRT01A, .overall = TRUE, .attributes = TRUE,\n    ard_continuous(variables = AGE),\n    ard_categorical(variables = AGEGR1)\n  ) |&gt; \n  tbl_ard_summary(\n    by = TRT01A,\n    type = AGE ~ \"continuous2\",\n    statistic = AGE ~ c(\"{mean} ({sd})\", \"{median} ({p25}, {p75})\"),\n    overall = TRUE\n  ) |&gt; \n  add_stat_label()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCharacteristic\nOverall\nPlacebo\nXanomeline High Dose\nXanomeline Low Dose\n\n\n\n\nAge\n\n\n\n\n\n\n\n\n\n\n    Mean (SD)\n75.1 (8.2)\n75.2 (8.6)\n73.8 (7.9)\n76.0 (8.1)\n\n\n    Median (Q1, Q3)\n77.0 (70.0, 81.0)\n76.0 (69.0, 82.0)\n75.5 (70.0, 79.0)\n78.0 (71.0, 82.0)\n\n\nPooled Age Group 1, n (%)\n\n\n\n\n\n\n\n\n\n\n    &gt;64\n221 (87.0%)\n72 (83.7%)\n61 (84.7%)\n88 (91.7%)\n\n\n    18-64\n33 (13.0%)\n14 (16.3%)\n11 (15.3%)\n8 (8.3%)"
-  },
-  {
     "objectID": "slides/index.html#gtsummary-extras",
     "href": "slides/index.html#gtsummary-extras",
     "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
@@ -187,13 +229,6 @@
     "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
     "section": "{gtsummary} extras",
     "text": "{gtsummary} extras"
-  },
-  {
-    "objectID": "slides/index.html#section-2",
-    "href": "slides/index.html#section-2",
-    "title": "Harnessing Analysis Results Datasets (ARD) for Clinical Reporting in R",
-    "section": "",
-    "text": "🕺🕺 ARD Team 🕺🕺"
   },
   {
     "objectID": "index.html",
