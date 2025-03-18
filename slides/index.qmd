@@ -19,15 +19,17 @@ title-slide-attributes:
   data-background-opacity: "0.15"
 ---
 
-## What are we doing here today?
+## Today's Plan
 
--   Briefest introduction into CDISC's Analysis Results Standard (ARS)
+-   Discuss our experience using ARD-first approach for TLGs.
 
--   Where Analysis Results Datasets (ARDs) fits under the umbrella of ARS
+-   But first, a little background
 
--   How to utilize ARDs to facilitate reporting with and without the ARS
-
-    -   Using {cards} to build ARDs and {gtsummary} for reporting
+    - CDISC's Analysis Results Standard (ARS)
+    
+    - ARDs with the {cards}+{cardx} packages
+    
+    - Tables with the {gtsummary} package
 
 ![](images/cards-cardx-gtsummary-hex){width="33%" fig-align="center"}
 
@@ -49,6 +51,8 @@ title-slide-attributes:
 
 - {cards} serves as the engine for the analysis 
 
+- {gtsummary} is the engine for summary tables
+
 ## Analysis Results Data (ARD)
 
 -   Encodes statistical analysis outcomes in a machine-readable format.
@@ -59,28 +63,12 @@ title-slide-attributes:
 
 -   The ARD does *not* describe the layout of the results
 
-
 ## Analysis Results Data (ARD)
 
 * After the initial creation of an ARD, the results can later be re-used again and again for subsequent reporting needs.
 
 ![](images/ard-flow.png){fig-align="center"}
 
-## ARDs uses outside of the ARS
-
-:::{.incremental}
-
--   Rethinking QC
-
-    -   Highly structured data frame of results is much simpler to QC compared to statistics in a summary table or figure.
-    
--   Flexible data file types
-
-    -   ARD can be saved as a dataset (rds, xpt, parquet, etc.), YAML, or JSON file
-
--   ARDs integrate with the {gtsummary} package to create summary tables
-
-:::
 
 # ARDs using {cards} 
 
@@ -96,7 +84,7 @@ title-slide-attributes:
 
 -   Can be used within the ARS workflow and separately
 
--   45k downloads per month 🤯
+-   52K downloads per month 🤯
 
 :::
 
@@ -191,6 +179,220 @@ The results from all these functions are entirely compatible with one another, a
 
 -   This list is growing (rather quickly) 🌱
 
+::: aside
+
+{cards} provides a general framework to easily implement _any_ method. {cardx} provides a nicer user experience for common methods.
+
+:::
+
+# Tables with {gtsummary}
+
+## 
+
+::::::::: columns
+:::::: {.column width="60%"}
+### How it started
+
+::: small
+-   Began to address reproducible issues while working in academia
+
+-   Goal was to build a package to summarize study results with code that was [both simple and customizable]{.emphasis}
+
+-   First release in May 2019
+:::
+
+:::: fragment
+### How it's going
+
+::: small
+-   The stats
+
+    -   [1,300,000+ installations]{.emphasis} from CRAN
+    -   1100+ GitHub stars
+    -   300+ contributors
+    -   50+ code contributors
+:::
+::::
+::::::
+
+:::: {.column width="40%"}
+<img src="images/gtsummary-logo.png" width="650"/>
+
+::::
+:::::::::
+
+##
+
+::::::::: columns
+:::::: {.column width="60%"}
+
+-   Won the 2021 American Statistical Association (ASA) Innovation in Programming Award
+
+<img src="images/asa.png" width="250"/>
+
+-   Agustin Calatroni and I won the 2024 Posit Pharma Table Contest by re-creating an entire CSR with the {gtsummary} package
+
+<img src="images/posit.png" width="280"/>
+
+::::::
+
+:::: {.column width="40%"}
+<img src="images/gtsummary-logo.png" width="650"/>
+
+::::
+:::::::::
+
+
+## {gtsummary} runs on ARDs!
+
+![](images/ARD-gtsummary-example.png)
+
+## Demographics Example
+
+```{r}
+#| code-line-numbers: "|4-9|5|6|7|8|10|11"
+library(gtsummary)
+
+tbl <- dplyr::filter(pharmaverseadam::adsl, SAFFL == "Y") |> 
+  tbl_summary(
+    by = TRT01A,
+    include = c(AGE, AGEGR1),
+    type = AGE ~ "continuous2",
+    statistic = AGE ~ c("{mean} ({sd})", "{median} ({p25}, {p75})")
+  ) |> 
+  add_overall() |> 
+  add_stat_label()
+tbl
+```
+
+## Demographics Example
+
+- Extract the ARD from the table object
+
+```{r}
+#| message: true
+gather_ard(tbl) |> purrr::pluck("tbl_summary")
+```
+
+## Demographics Example: ARD-first
+
+```{r}
+#| code-line-numbers: "|2-6|7-12|8|9|10|11|13"
+dplyr::filter(pharmaverseadam::adsl, SAFFL == "Y") |> 
+  cards::ard_stack(
+    .by = TRT01A, .overall = TRUE, .attributes = TRUE,
+    ard_continuous(variables = AGE),
+    ard_categorical(variables = AGEGR1)
+  ) |> 
+  tbl_ard_summary(
+    by = TRT01A,
+    type = AGE ~ "continuous2",
+    statistic = AGE ~ c("{mean} ({sd})", "{median} ({p25}, {p75})"),
+    overall = TRUE
+  ) |> 
+  add_stat_label()
+```
+
+
+# Our Pilot
+
+## Our ARD-based Pilot
+
+- We wanted to dip our toes into CDISC's Analysis Results Standard (ARS)
+  
+  - We did not try to implement the full model, just getting a taste
+  
+  - Using _some_ metadata to drive the creation of TLGs
+  
+  - Using an ARD-first approach to create our TLGs, e.g. using the {cards} R package to create ARDs, and the {gtsummary} package for tables
+  
+- Report on our experience! What would we change if we were to do it again?
+
+## What we liked!
+
+- Using {cards}+{cardx}+{gtsummary}, we created every summary for a trial read-out. 🕺🕺🕺
+
+- These tools are general to allow us to create any table needed, whether it was a table of simple counts or complex statistical results.
+
+- Nolan was the primary statistical programmer for this study. 
+
+    - We did not have time for proper training on the new {cards} and {cardx} packages, nor for the {gtsummary} package.
+
+    - Despite no training, he was quickly able to pick up the packages and immediately begin using, which we attribute to the intuitive user interface. 🚀
+
+## What we liked!
+
+- We loved the ARD-based results, which made QC simple and straightforward.
+
+    - A highly structured data frame of results is straightforward to QC compared to a summary table or figure.
+
+- The ARDs make re-use of the results simple as well.
+    
+- As long as we have both the ARD and the table/figure, we are happy with whatever order they are created.
+    
+## What we would do differently?
+
+- As {gtsummary} runs on ARDs, we found the requirement of creating the ARD first, then using it to create the summary table more complex than the process needed to be.
+
+   - ARDs can be extracted directly from any {gtsummary} and in many cases it is sufficient to create the table directly and take the ARD from the table object.
+
+## What we would do differently?
+
+- The full ARS model is metadata driven. This also means the metadata dictate the precise layout of the tables.
+
+- We preferred to write an R script for the persnickety formatting, rather than making those specifications in a metadata format.
+
+    - If a trial only reported "standard" tables, it would be much less of an issue to specify detailed meta data for layouts. But every trial (and in particular this pilot) has many bespoke tables not part of a standard library.
+    
+- We were still able to take advantage of the ARS attributes, such as tracability, re-use, and automation.
+
+## 
+
+::: {.larger}
+
+🕺🕺 ARD Team 🕺🕺
+
+:::
+
+::: {.v-center-container}
+
+![](images/coauthors.png)
+
+:::
+
+<!-- ####################### END OF SLIDES ######################### -->
+
+
+
+
+
+
+
+
+
+
+## ARDs uses outside of the ARS
+
+:::{.incremental}
+
+-   Rethinking QC
+
+    -   Highly structured data frame of results is much simpler to QC compared to statistics in a summary table or figure.
+    
+-   Flexible data file types
+
+    -   ARD can be saved as a dataset (rds, xpt, parquet, etc.), YAML, or JSON file
+
+-   ARDs integrate with the {gtsummary} package to create summary tables
+
+:::
+
+
+
+
+
+
+
 ## {cardx} t-test Example
 
 ::: {.small}
@@ -283,113 +485,17 @@ cards::print_ard_conditions(ard_gone_wrong)
 
 :::
 
-# Tables with {gtsummary}
-
-## 
-
-::::::::: columns
-:::::: {.column width="60%"}
-### How it started
-
-::: small
--   Began to address reproducible issues while working in academia
-
--   Goal was to build a package to summarize study results with code that was [both simple and customizable]{.emphasis}
-
--   First release in May 2019
-:::
-
-:::: fragment
-### How it's going
-
-::: small
--   The stats
-
-    -   [1,200,000+ installations]{.emphasis} from CRAN
-    -   1000+ GitHub stars
-    -   300+ contributors
-    -   \~50 code contributors
-:::
-::::
-::::::
-
-:::: {.column width="40%"}
-<img src="images/gtsummary-logo.png" width="650"/>
-
-::::
-:::::::::
-
-##
-
-::::::::: columns
-:::::: {.column width="60%"}
-
--   Won the 2021 American Statistical Association (ASA) Innovation in Programming Award
-
-<img src="images/asa.png" width="250"/>
-
--   Agustin Calatroni and I won the 2024 Posit Pharma Table Contest by re-creating an entire CSR with the {gtsummary} package
-
-<img src="images/posit.png" width="280"/>
-
-::::::
-
-:::: {.column width="40%"}
-<img src="images/gtsummary-logo.png" width="650"/>
-
-::::
-:::::::::
 
 
-## {gtsummary} runs on ARDs!
 
-![](images/ARD-gtsummary-example.png)
 
-## Demographics Example
 
-```{r}
-#| code-line-numbers: "|4-9|5|6|7|8|10|11"
-library(gtsummary)
 
-tbl <- dplyr::filter(pharmaverseadam::adsl, SAFFL == "Y") |> 
-  tbl_summary(
-    by = TRT01A,
-    include = c(AGE, AGEGR1),
-    type = AGE ~ "continuous2",
-    statistic = AGE ~ c("{mean} ({sd})", "{median} ({p25}, {p75})")
-  ) |> 
-  add_overall() |> 
-  add_stat_label()
-tbl
-```
 
-## Demographics Example
 
-- Extract the ARD from the table object
 
-```{r}
-#| message: true
-gather_ard(tbl) |> purrr::pluck("tbl_summary")
-```
 
-## Demographics Example: ARD-first
 
-```{r}
-#| code-line-numbers: "|2-6|7-12|8|9|10|11|13"
-dplyr::filter(pharmaverseadam::adsl, SAFFL == "Y") |> 
-  cards::ard_stack(
-    .by = TRT01A, .overall = TRUE, .attributes = TRUE,
-    ard_continuous(variables = AGE),
-    ard_categorical(variables = AGEGR1)
-  ) |> 
-  tbl_ard_summary(
-    by = TRT01A,
-    type = AGE ~ "continuous2",
-    statistic = AGE ~ c("{mean} ({sd})", "{median} ({p25}, {p75})"),
-    overall = TRUE
-  ) |> 
-  add_stat_label()
-```
 
 ## {gtsummary} extras
 
@@ -428,16 +534,3 @@ cards::ADAE[1:7, c("USUBJID", "AESOC", "AETERM", "AESEV")] |>
 
 ![](images/gtsummary_rmarkdown.png)
 
-## 
-
-::: {.larger}
-
-🕺🕺 ARD Team 🕺🕺
-
-:::
-
-::: {.v-center-container}
-
-![](images/coauthors.png)
-
-:::

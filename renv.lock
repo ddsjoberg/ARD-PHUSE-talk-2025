@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.3.3",
+    "Version": "4.4.2",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -263,7 +263,7 @@
     },
     "cards": {
       "Package": "cards",
-      "Version": "0.4.0",
+      "Version": "0.5.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -271,21 +271,18 @@
         "cli",
         "dplyr",
         "glue",
+        "lifecycle",
         "rlang",
         "tidyr",
         "tidyselect"
       ],
-      "Hash": "2cd0d1966092de416f9b7fa1e88b6132"
+      "Hash": "f92cbcce5dec3c49721c574a52431cf9"
     },
     "cardx": {
       "Package": "cardx",
-      "Version": "0.2.2.9006",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "cardx",
-      "RemoteUsername": "insightsengineering",
-      "RemoteSha": "0dba421c722d4d9a5f524f9024ac6be85e96f285",
+      "Version": "0.2.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "cards",
@@ -296,7 +293,7 @@
         "rlang",
         "tidyr"
       ],
-      "Hash": "4726d2ebce4f0c23a38372b15e984f51"
+      "Hash": "ea3f301682b69cb13deeb50ed3064501"
     },
     "class": {
       "Package": "class",
@@ -775,14 +772,9 @@
     },
     "gtsummary": {
       "Package": "gtsummary",
-      "Version": "2.0.4.9013",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteUsername": "ddsjoberg",
-      "RemoteRepo": "gtsummary",
-      "RemoteRef": "main",
-      "RemoteSha": "2239d89abb9a903a8e185576c030a25e0de6d4f0",
+      "Version": "2.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "cards",
@@ -795,7 +787,7 @@
         "tidyr",
         "vctrs"
       ],
-      "Hash": "8157b396f62d086605e7fa1268461967"
+      "Hash": "02efdff3e1b88137a48f6aa24e74fe21"
     },
     "haven": {
       "Package": "haven",
@@ -1147,13 +1139,13 @@
     },
     "openssl": {
       "Package": "openssl",
-      "Version": "2.3.1",
+      "Version": "2.3.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "askpass"
       ],
-      "Hash": "37a7f0abce0349f5950ce49f38c7626b"
+      "Hash": "bc54d87ebf858b28de18df4bca6528d3"
     },
     "patchwork": {
       "Package": "patchwork",
@@ -1789,16 +1781,19 @@
     },
     "textshaping": {
       "Package": "textshaping",
-      "Version": "0.4.1",
+      "Version": "1.0.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "cpp11",
         "lifecycle",
-        "systemfonts"
+        "stats",
+        "stringi",
+        "systemfonts",
+        "utils"
       ],
-      "Hash": "573e0d015b7fc3e555f83e254cad7533"
+      "Hash": "5d44adc8145c718066b0bc374d142ca1"
     },
     "tibble": {
       "Package": "tibble",
